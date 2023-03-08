@@ -5,6 +5,7 @@ ruby '2.7.4'
 
 gem 'rails', '~> 6.1.1'
 gem 'pg', '>= 0.18', '< 2.0'
+gem 'devise_token_auth'
 gem 'devise', '~> 4.7', '>= 4.7.3'
 gem 'net-http'
 gem 'rack-cors'
@@ -17,9 +18,6 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec', require: false
   gem 'rspec-rails'
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
   gem 'shoulda-matchers'
 end
 
