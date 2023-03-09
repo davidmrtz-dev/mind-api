@@ -7,6 +7,6 @@ RSpec.describe Team, type: :model do
   end
 
   describe 'validations' do
-    it { should allow_value('Thundercats').for(:name).on(:update) }
+    it { should allow_value('Thundercats').for(:name) }
   end
 end
