@@ -14,7 +14,7 @@ module Api
       )
 
       render json: {
-        users: page
+        users: ::Api::UsersSerializer.json(page)
       }
     end
   end
