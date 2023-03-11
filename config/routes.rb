@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     defaults(format: :json) do
-      resources :users, only: %i[index show]
+      resources :users, only: %i[index show create]
     end
   end
 end
