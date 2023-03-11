@@ -24,4 +24,30 @@ RSpec.describe Api::UsersController, type: :controller do
       expect(parsed_response[:user][:id]).to eq user.id
     end
   end
+
+  describe 'POST /api/users' do
+    subject(:action) {
+      post :create, params: {
+        user: {
+          email: 'user-2@example.com',
+          password: 'password',
+          password_confirmation: 'password'
+        }
+      }
+    }
+
+    login_user
+
+    it 'creates a user' do
+      expect { action }.to change { User.count }.by 1
+
+      action
+
+      user = User.last
+
+      expect(response).to have_http_status(:created)
+      expect(parsed_response[:user][:id]).to eq user.id
+      expect(parsed_response[:user][:email]).to eq 'user-2@example.com'
+    end
+  end
 end
