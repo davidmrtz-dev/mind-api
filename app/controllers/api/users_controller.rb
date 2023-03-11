@@ -17,5 +17,17 @@ module Api
         users: ::Api::UsersSerializer.json(page)
       }
     end
+
+    def show
+      user = find_user
+
+      render json: { user: user }
+    end
+
+    private
+
+    def find_user
+      User.find(params[:id])
+    end
   end
 end
