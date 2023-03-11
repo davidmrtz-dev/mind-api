@@ -49,5 +49,15 @@ RSpec.describe Api::UsersController, type: :controller do
       expect(parsed_response[:user][:id]).to eq user.id
       expect(parsed_response[:user][:email]).to eq 'user-2@example.com'
     end
+
+    it 'handles validation error' do
+      post :create, params: {
+        user: {
+          email: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
   end
 end
