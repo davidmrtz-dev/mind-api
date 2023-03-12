@@ -21,7 +21,7 @@ module Api
     def show
       user = find_user
 
-      render json: { user: user }
+      render json: { user: ::Api::UserSerializer.json(user) }
     end
 
     def create
@@ -29,7 +29,7 @@ module Api
         User.new(user_params)
 
       if user.save
-        render json: { user: user }, status: :created
+        render json: { user: ::Api::UserSerializer.json(user) }, status: :created
       else
         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
       end
