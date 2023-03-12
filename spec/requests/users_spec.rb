@@ -98,4 +98,25 @@ RSpec.describe Api::UsersController, type: :controller do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
+
+  describe 'DELETE /api/users/:id' do
+    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+
+    subject(:action) { delete :destroy, params: { id: user.id } }
+
+    login_user
+
+    it 'calls to deleter the user' do
+      expect { action }.to change { User.count }.by (-1)
+
+      action
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'handles not found' do
+      expect { delete :destroy, params: { id: 0 } }
+        .to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
