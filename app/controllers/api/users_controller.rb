@@ -35,6 +35,16 @@ module Api
       end
     end
 
+    def update
+      user = find_user
+
+      if user.update(user_params)
+        render json: { user: ::Api::UserSerializer.json(user) }
+      else
+        render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def find_user
@@ -45,7 +55,8 @@ module Api
       params.require(:user).permit(
         :email,
         :password,
-        :password_confirmation
+        :password_confirmation,
+        :nickname
       )
     end
   end

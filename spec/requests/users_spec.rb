@@ -60,4 +60,42 @@ RSpec.describe Api::UsersController, type: :controller do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
+
+  describe 'PUT /api/users/:id' do
+    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+
+    subject(:action) {
+      put :update, params: {
+        id: user.id,
+        user: {
+          nickname: 'Dart Vader'
+        }
+      }
+    }
+
+    login_user
+
+    it 'calls to update the user' do
+      expect(user.nickname).to eq nil
+
+      action
+
+      user.reload
+
+      expect(response).to have_http_status(:ok)
+      expect(parsed_response[:user][:id]).to eq user.id
+      expect(user.nickname).to eq 'Dart Vader'
+    end
+
+    it 'handles validation error' do
+      put :update, params: {
+        id: user.id,
+        user: {
+          email: ''
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end
