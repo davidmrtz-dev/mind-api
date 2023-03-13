@@ -49,5 +49,15 @@ RSpec.describe Api::AccountsController, type: :controller do
       expect(parsed_response[:account][:id]).to eq account.id
       expect(parsed_response[:account][:name]).to eq account.name
     end
+
+    it 'handles validation error' do
+      post :create, params: {
+        account: {
+          name: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
   end
 end
