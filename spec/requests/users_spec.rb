@@ -12,7 +12,7 @@ RSpec.describe Api::UsersController, type: :controller do
     end
   end
 
-  describe 'GET /api/user/:id' do
+  describe 'GET /api/users/:id' do
     let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
 
     login_user
