@@ -4,7 +4,7 @@ RSpec.describe Api::AccountsController, type: :controller do
   describe 'GET /api/accounts' do
     login_user
 
-    it 'return accounts' do
+    it 'returns the accounts' do
       get :index
 
       expect(response).to have_http_status(:ok)
