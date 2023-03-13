@@ -21,7 +21,7 @@ module Api
     def show
       team = find_team
 
-      render json: { team: team }
+      render json: { team: ::Api::TeamSerializer.json(team) }
     end
 
     private
