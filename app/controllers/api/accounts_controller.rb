@@ -21,7 +21,7 @@ module Api
     def show
       account = find_account
 
-      render json: { account: account }
+      render json: { account: ::Api::AccountSerializer.json(account) }
     end
 
     private
