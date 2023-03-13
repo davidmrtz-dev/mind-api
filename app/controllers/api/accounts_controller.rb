@@ -17,5 +17,17 @@ module Api
         accounts: ::Api::AccountsSerializer.json(page)
       }
     end
+
+    def show
+      account = find_account
+
+      render json: { account: account }
+    end
+
+    private
+
+    def find_account
+      Account.find(params[:id])
+    end
   end
 end
