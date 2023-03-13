@@ -8,12 +8,12 @@ RSpec.describe Api::UsersController, type: :controller do
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:users].map { |o| o[:id] }).to match_array(User.ids)
+      expect(parsed_response[:users].map { |u| u[:id] }).to match_array(User.ids)
     end
   end
 
-  describe 'GET /api/user/:id' do
-    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+  describe 'GET /api/users/:id' do
+    let(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
 
     login_user
 
@@ -62,13 +62,13 @@ RSpec.describe Api::UsersController, type: :controller do
   end
 
   describe 'PUT /api/users/:id' do
-    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+    let(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
 
     subject(:action) {
       put :update, params: {
         id: user.id,
         user: {
-          nickname: 'Dart Vader'
+          nickname: 'Darth Vader'
         }
       }
     }
@@ -84,7 +84,7 @@ RSpec.describe Api::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:user][:id]).to eq user.id
-      expect(user.nickname).to eq 'Dart Vader'
+      expect(user.nickname).to eq 'Darth Vader'
     end
 
     it 'handles validation error' do
