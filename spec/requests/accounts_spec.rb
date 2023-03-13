@@ -76,7 +76,7 @@ RSpec.describe Api::AccountsController, type: :controller do
 
     login_user
 
-    it 'calls to update the user' do
+    it 'calls to update the account' do
       expect(account.manager_name).to eq nil
 
       action
@@ -97,6 +97,27 @@ RSpec.describe Api::AccountsController, type: :controller do
       }
 
       expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
+  describe 'DELETE /api/accounts/:id' do
+    let!(:account) { AccountFactory.create }
+
+    subject(:action) { delete :destroy, params: { id: account.id } }
+
+    login_user
+
+    it 'calls to delete the account' do
+      expect { action }.to change { Account.count }.by (-1)
+
+      action
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'handles not found' do
+      expect { delete :destroy, params: { id: 0 } }
+        .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -62,7 +62,7 @@ RSpec.describe Api::UsersController, type: :controller do
   end
 
   describe 'PUT /api/users/:id' do
-    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+    let(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
 
     subject(:action) {
       put :update, params: {
