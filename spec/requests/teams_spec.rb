@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::TeamsController, type: :controller do
+  let(:account) { AccountFactory.create }
+
   describe 'GET /api/teams' do
     login_user
 
@@ -13,7 +15,6 @@ RSpec.describe Api::TeamsController, type: :controller do
   end
 
   describe 'GET /api/teams/:id' do
-    let(:account) { AccountFactory.create }
     let(:team) { TeamFactory.create(account: account) }
 
     login_user
@@ -27,8 +28,6 @@ RSpec.describe Api::TeamsController, type: :controller do
   end
 
   describe 'POST /api/teams' do
-    let(:account) { AccountFactory.create }
-
     subject(:action) {
       post :create, params: {
         team: {
@@ -57,6 +56,44 @@ RSpec.describe Api::TeamsController, type: :controller do
       post :create, params: {
         team: {
           account_id: account.id,
+          name: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
+  describe 'PUT /api/teams/:id' do
+    let(:team) { TeamFactory.create(account: account, name: 'Maze Runners') }
+
+    subject(:action) {
+      put :update, params: {
+        id: team.id,
+        team: {
+          name: 'Falcons'
+        }
+      }
+    }
+
+    login_user
+
+    it 'calls to update the team' do
+      expect(team.name).to eq 'Maze Runners'
+
+      action
+
+      team.reload
+
+      expect(response).to have_http_status(:ok)
+      expect(parsed_response[:team][:id]).to eq team.id
+      expect(team.name).to eq 'Falcons'
+    end
+
+    it 'handles validation error' do
+      put :update, params: {
+        id: team.id,
+        team: {
           name: nil
         }
       }
