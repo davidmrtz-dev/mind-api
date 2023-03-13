@@ -52,5 +52,16 @@ RSpec.describe Api::TeamsController, type: :controller do
       expect(parsed_response[:team][:name]).to eq 'Maze Runners'
       expect(team.account_id).to eq account.id
     end
+
+    it 'handles validation error' do
+      post :create, params: {
+        team: {
+          account_id: account.id,
+          name: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
   end
 end

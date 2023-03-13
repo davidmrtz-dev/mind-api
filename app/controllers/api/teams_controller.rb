@@ -24,10 +24,33 @@ module Api
       render json: { team: ::Api::TeamSerializer.json(team) }
     end
 
+    def create
+      account = find_account
+      team =
+        Team.new(team_params.merge(account: account))
+
+      if team.save
+        render json: { team: ::Api::TeamSerializer.json(team) }, status: :created
+      else
+        render json: { errors: team.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def find_team
       Team.find(params[:id])
+    end
+
+    def find_account
+      Account.find(team_params[:account_id])
+    end
+
+    def team_params
+      params.require(:team).permit(
+        :account_id,
+        :name
+      )
     end
   end
 end
