@@ -14,7 +14,7 @@ module Api
       )
 
       render json: {
-        accounts: page
+        accounts: ::Api::AccountsSerializer.json(page)
       }
     end
   end
