@@ -101,22 +101,28 @@ RSpec.describe Api::UsersController, type: :controller do
 
   describe 'DELETE /api/users/:id' do
     let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+    let!(:another_user) { UserFactory.create(email: 'user-2@example.com', password: 'password') }
 
-    subject(:action) { delete :destroy, params: { id: user.id } }
+    subject(:action) { delete :destroy, params: { id: another_user.id } }
 
-    login_user
+    before(:each) do
+      headers = user.create_new_auth_token
+      request.headers['access-token'] = headers['access-token']
+      request.headers['client'] = headers['client']
+      request.headers['uid'] = headers['uid']
+    end
 
     it 'calls to delete the user' do
-      # expect { action }.to change { User.count }.by (-1)
-      # byebug
+      expect { action }.to change { User.count }.by (-1)
+
       action
 
       expect(response).to have_http_status(:no_content)
     end
 
-    # it 'handles not found' do
-    #   expect { delete :destroy, params: { id: 0 } }
-    #     .to raise_error(ActiveRecord::RecordNotFound)
-    # end
+    it 'handles not found' do
+      expect { delete :destroy, params: { id: 0 } }
+        .to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
