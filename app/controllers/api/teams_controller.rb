@@ -14,7 +14,7 @@ module Api
       )
 
       render json: {
-        teams: page
+        teams: ::Api::TeamsSerializer.json(page)
       }
     end
   end
