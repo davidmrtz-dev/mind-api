@@ -68,7 +68,7 @@ RSpec.describe Api::UsersController, type: :controller do
       put :update, params: {
         id: user.id,
         user: {
-          nickname: 'Dart Vader'
+          nickname: 'Darth Vader'
         }
       }
     }
@@ -84,7 +84,7 @@ RSpec.describe Api::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:user][:id]).to eq user.id
-      expect(user.nickname).to eq 'Dart Vader'
+      expect(user.nickname).to eq 'Darth Vader'
     end
 
     it 'handles validation error' do

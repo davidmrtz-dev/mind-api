@@ -24,4 +24,40 @@ RSpec.describe Api::AccountsController, type: :controller do
       expect(parsed_response[:account][:id]).to eq account.id
     end
   end
+
+  describe 'POST /api/accounts' do
+    subject(:action) {
+      post :create, params: {
+        account: {
+          client_name: 'Bart Simpson',
+          manager_name: 'Darth Vader',
+          name: 'Maze Runners'
+        }
+      }
+    }
+
+    login_user
+
+    it 'creates an account' do
+      expect { action }.to change { Account.count }.by 1
+
+      action
+
+      account = Account.last
+
+      expect(response).to have_http_status(:created)
+      expect(parsed_response[:account][:id]).to eq account.id
+      expect(parsed_response[:account][:name]).to eq account.name
+    end
+
+    it 'handles validation error' do
+      post :create, params: {
+        account: {
+          name: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end
