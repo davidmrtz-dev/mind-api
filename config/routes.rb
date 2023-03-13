@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     defaults(format: :json) do
-      resources :users, only: %i[index show create update destroy]
+      resources :users, except: %i[new patch]
+      resources :accounts, except: %i[new patch]
     end
   end
 end
