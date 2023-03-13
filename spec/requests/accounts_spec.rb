@@ -76,7 +76,7 @@ RSpec.describe Api::AccountsController, type: :controller do
 
     login_user
 
-    it 'calls to update the user' do
+    it 'calls to update the account' do
       expect(account.manager_name).to eq nil
 
       action
@@ -101,13 +101,13 @@ RSpec.describe Api::AccountsController, type: :controller do
   end
 
   describe 'DELETE /api/accounts/:id' do
-    let(:account) { UserFactory.create }
+    let!(:account) { AccountFactory.create }
 
     subject(:action) { delete :destroy, params: { id: account.id } }
 
     login_user
 
-    it 'calls to delete the user' do
+    it 'calls to delete the account' do
       expect { action }.to change { Account.count }.by (-1)
 
       action
