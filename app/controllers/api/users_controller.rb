@@ -45,6 +45,12 @@ module Api
       end
     end
 
+    def destroy
+      find_user.destroy!
+
+      head :no_content
+    end
+
     private
 
     def find_user
