@@ -46,6 +46,12 @@ module Api
       end
     end
 
+    def destroy
+      find_team.destroy!
+
+      head :no_content
+    end
+
     private
 
     def find_team

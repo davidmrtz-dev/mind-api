@@ -101,4 +101,25 @@ RSpec.describe Api::TeamsController, type: :controller do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
+
+  describe 'DELETE /api/teams/:id' do
+    let!(:team) { TeamFactory.create(account: account) }
+
+    subject(:action) { delete :destroy, params: { id: team.id } }
+
+    login_user
+
+    it 'calls to delete the team' do
+      expect { action }.to change { Team.count }.by (-1)
+
+      action
+
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it 'handles not found' do
+      expect { delete :destroy, params: { id: 0 } }
+        .to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
