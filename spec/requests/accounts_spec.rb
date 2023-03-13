@@ -38,7 +38,7 @@ RSpec.describe Api::AccountsController, type: :controller do
 
     login_user
 
-    it 'creates an account' do
+    it 'creates and return an account' do
       expect { action }.to change { Account.count }.by 1
 
       action
