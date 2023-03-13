@@ -103,7 +103,7 @@ RSpec.describe Api::TeamsController, type: :controller do
   end
 
   describe 'DELETE /api/teams/:id' do
-    let!(team) { TeamFactory.create(account: account) }
+    let!(:team) { TeamFactory.create(account: account) }
 
     subject(:action) { delete :destroy, params: { id: team.id } }
 
