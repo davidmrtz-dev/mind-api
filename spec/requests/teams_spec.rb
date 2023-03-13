@@ -16,6 +16,8 @@ RSpec.describe Api::TeamsController, type: :controller do
     let(:account) { AccountFactory.create }
     let(:team) { TeamFactory.create(account: account) }
 
+    login_user
+
     it 'returns an account' do
       get :show, params: { id: team.id }
 

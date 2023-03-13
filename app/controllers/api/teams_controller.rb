@@ -17,5 +17,17 @@ module Api
         teams: ::Api::TeamsSerializer.json(page)
       }
     end
+
+    def show
+      team = find_team
+
+      render json: { team: team }
+    end
+
+    private
+
+    def find_team
+      Team.find(params[:id])
+    end
   end
 end
