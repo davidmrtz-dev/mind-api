@@ -35,6 +35,16 @@ module Api
       end
     end
 
+    def update
+      account = find_account
+
+      if account.update(account_params)
+        render json: { account: ::Api::AccountSerializer.json(account) }
+      else
+        render json: { errors: account.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def find_account

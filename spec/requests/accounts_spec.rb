@@ -60,4 +60,43 @@ RSpec.describe Api::AccountsController, type: :controller do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
+
+  describe 'PUT /api/accounts/:id' do
+    let(:account) { AccountFactory.create(manager_name: nil) }
+
+    subject(:action) {
+      put :update, params: {
+        id: account.id,
+        account: {
+          manager_name: 'Obi Wan Kenobi',
+          name: 'The Dorilocos'
+        }
+      }
+    }
+
+    login_user
+
+    it 'calls to update the user' do
+      expect(account.manager_name).to eq nil
+
+      action
+
+      account.reload
+
+      expect(response).to have_http_status(:ok)
+      expect(parsed_response[:account][:id]).to eq account.id
+      expect(account.manager_name).to eq 'Obi Wan Kenobi'
+    end
+
+    it 'handles validation error' do
+      put :update, params: {
+        id: account.id,
+        account: {
+          name: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end
