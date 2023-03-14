@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::UserTeamsController, type: :controller do
-  let(:user) { UserFactory.create(password: 'password') }
-  let(:account) { AccountFactory.create }
-  let(:team) { TeamFactory.create(account: account) }
+  let!(:user) { UserFactory.create(password: 'password') }
+  let!(:account) { AccountFactory.create }
+  let!(:team) { TeamFactory.create(account: account) }
 
   describe 'GET /api/user_teams' do
     login_user
@@ -49,7 +49,9 @@ RSpec.describe Api::UserTeamsController, type: :controller do
     it 'handles validation error' do
       post :create, params: {
         user_team: {
-          user_id: nil
+          user_id: user.id,
+          team_id: team.id,
+          status: nil
         }
       }
 
