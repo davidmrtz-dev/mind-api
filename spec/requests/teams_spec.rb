@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::TeamsController, type: :controller do
+RSpec.describe Api::V1::TeamsController, type: :controller do
   let(:account) { AccountFactory.create }
 
   describe 'GET /api/teams' do
