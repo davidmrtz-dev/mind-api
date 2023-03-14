@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::UserTeamsController, type: :controller do
+RSpec.describe Api::V1::UserTeamsController, type: :controller do
   let!(:user) { UserFactory.create(password: 'password') }
   let!(:account) { AccountFactory.create }
   let!(:team) { TeamFactory.create(account: account) }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::AccountsController, type: :controller do
+RSpec.describe Api::V1::AccountsController, type: :controller do
   describe 'GET /api/accounts' do
     login_user
 
