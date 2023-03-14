@@ -5,7 +5,7 @@ class CreateUserTeams < ActiveRecord::Migration[6.1]
       t.references :team, null: false, foreign_key: true
       t.date :start_at
       t.date :end_at
-      t.integer :status, null: false
+      t.integer :status
 
       t.timestamps
     end
