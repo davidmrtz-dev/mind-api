@@ -5,6 +5,7 @@ RSpec.describe Api::AccountsController, type: :controller do
     login_user
 
     it 'returns the accounts' do
+      3.times { AccountFactory.create }
       get :index
 
       expect(response).to have_http_status(:ok)

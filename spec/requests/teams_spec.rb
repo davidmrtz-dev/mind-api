@@ -7,6 +7,8 @@ RSpec.describe Api::TeamsController, type: :controller do
     login_user
 
     it 'returns the accounts' do
+      3.times { TeamFactory.create(account: account) }
+
       get :index
 
       expect(response).to have_http_status(:ok)
