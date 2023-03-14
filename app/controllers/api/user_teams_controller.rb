@@ -32,7 +32,17 @@ module Api
       end
     end
 
+    def destroy
+      find_user_team.destroy!
+
+      head :no_content
+    end
+
     private
+
+    def find_user_team
+      UserTeam.find(params[:id])
+    end
 
     def find_user
       User.find(user_team_params[:user_id])
