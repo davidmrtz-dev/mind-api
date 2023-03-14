@@ -26,7 +26,7 @@ module Api
         UserTeam.new(user_team_params.merge(user: user, team: team))
 
       if user_team.save
-        render json: { user_team: user_team }, status: :created
+        render json: { user_team: ::Api::UserTeamSerializer.json(user_team) }, status: :created
       else
         render json: { errors: user_team.errors.full_messages }, status: :unprocessable_entity
       end
