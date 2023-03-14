@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2023_03_09_202157) do
     t.bigint "team_id", null: false
     t.date "start_at"
     t.date "end_at"
-    t.integer "status", null: false
+    t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_id"], name: "index_user_teams_on_team_id"
