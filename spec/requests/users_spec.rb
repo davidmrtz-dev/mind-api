@@ -5,6 +5,10 @@ RSpec.describe Api::UsersController, type: :controller do
     login_user
 
     it 'return users' do
+      3.times.each do |num|
+        UserFactory.create(email: "user-#{num}@example.com", password: 'password')
+      end
+
       get :index
 
       expect(response).to have_http_status(:ok)
