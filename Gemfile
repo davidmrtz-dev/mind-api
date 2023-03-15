@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.4'
 
+gem 'action_policy'
 gem 'rails', '~> 6.1.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'devise_token_auth'
