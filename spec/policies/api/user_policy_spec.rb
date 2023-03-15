@@ -13,7 +13,7 @@ RSpec.describe Api::UserPolicy, type: :policy do
       end
     end
 
-    describe '#index' do
+    describe '#index?' do
       subject { user_policy.apply(:index?) }
 
       include_examples 'not authorized standard user'
@@ -27,19 +27,19 @@ RSpec.describe Api::UserPolicy, type: :policy do
       end
     end
 
-    describe '#create' do
+    describe '#create?' do
       subject { user_policy.apply(:create?) }
 
       include_examples 'not authorized standard user'
     end
 
-    describe '#udpate' do
+    describe '#udpate?' do
       subject { user_policy.apply(:update?) }
 
       include_examples 'not authorized standard user'
     end
 
-    describe '#delete' do
+    describe '#destroy?' do
       subject { user_policy.apply(:destroy?) }
 
       include_examples 'not authorized standard user'
