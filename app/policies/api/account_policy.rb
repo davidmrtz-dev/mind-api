@@ -4,18 +4,18 @@ class Api::AccountPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    admin? || super?
   end
 
   def create?
-    true
+    admin? || super?
   end
 
   def update?
-    true
+    admin? || super?
   end
 
   def destroy?
-    true
+    admin? || super?
   end
 end
