@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   include DeviseTokenAuth::Concerns::User
 
+  has_one :profile, dependent: :destroy
   has_many :user_teams
   has_many :teams, through: :user_teams
 
