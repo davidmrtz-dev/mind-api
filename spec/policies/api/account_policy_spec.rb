@@ -13,8 +13,32 @@ RSpec.describe Api::AccountPolicy, type: :policy do
       end
     end
 
-    describe '#index' do
+    describe '#index?' do
       subject { account_policy.apply(:index?) }
+
+      include_examples 'not authorized standard user'
+    end
+
+    describe '#show?' do
+      subject { account_policy.apply(:show?) }
+
+      include_examples 'not authorized standard user'
+    end
+
+    describe '#create?' do
+      subject { account_policy.apply(:create?) }
+
+      include_examples 'not authorized standard user'
+    end
+
+    describe '#update?' do
+      subject { account_policy.apply(:update?) }
+
+      include_examples 'not authorized standard user'
+    end
+
+    describe '#destroy?' do
+      subject { account_policy.apply(:destroy?) }
 
       include_examples 'not authorized standard user'
     end
