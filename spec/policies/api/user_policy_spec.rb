@@ -89,7 +89,7 @@ RSpec.describe Api::UserPolicy, type: :policy do
     end
   end
 
-  context 'when user is admin' do
+  context 'when user is super' do
     let(:user) { UserFactory.create(password: 'password') }
     let(:super_user) { UserFactory.create(password: 'password', user_type: :super) }
     let(:context) { { user: super_user } }
