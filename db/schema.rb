@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2023_03_09_202157) do
     t.string "image"
     t.string "email"
     t.json "tokens"
+    t.integer "user_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
