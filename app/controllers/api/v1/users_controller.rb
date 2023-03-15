@@ -5,6 +5,7 @@ module Api
 
       before_action :authenticate_user!
       before_action :verify_access
+      before_action :not_allow_self_destroy, only: [:destroy]
 
       def index
         users = User.all
@@ -70,6 +71,10 @@ module Api
 
       def verify_access
         authorize!
+      end
+
+      def not_allow_self_destroy
+        raise Errors::SelfDestroy if find_user == current_user
       end
     end
   end

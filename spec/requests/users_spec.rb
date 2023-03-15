@@ -129,5 +129,10 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect { delete :destroy, params: { id: 0 } }
         .to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it 'not allow self destroy' do
+      expect { delete :destroy, params: { id: admin.id } }
+        .to raise_error(Errors::SelfDestroy)
+    end
   end
 end
