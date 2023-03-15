@@ -4,6 +4,7 @@ module Api
       include Pagination
 
       before_action :authenticate_user!
+      before_action :verify_access
 
       def index
         user_teams = UserTeam.all
@@ -61,6 +62,10 @@ module Api
           :end_at,
           :status
         )
+      end
+
+      def verify_access
+        authorize!
       end
     end
   end
