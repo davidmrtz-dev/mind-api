@@ -65,7 +65,12 @@ module Api
           :email,
           :password,
           :password_confirmation,
-          :nickname
+          :nickname,
+          profile_attributes: [
+            :english_level,
+            :technical_knowledge,
+            :cv
+          ]
         )
       end
 

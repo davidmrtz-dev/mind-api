@@ -20,6 +20,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe 'GET /api/users/:id' do
     let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+    let!(:profile) { ProfileFactory.create(user: user) }
 
     login_user
 
@@ -28,6 +29,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:user][:id]).to eq user.id
+      expect(parsed_response[:user][:profile][:english_level]).to eq 'a1'
+      expect(parsed_response[:user][:profile][:technical_knowledge]).to eq 'Docker'
     end
   end
 
@@ -37,7 +40,12 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         user: {
           email: 'user-2@example.com',
           password: 'password',
-          password_confirmation: 'password'
+          password_confirmation: 'password',
+          profile_attributes: {
+            english_level: 'c1',
+            technical_knowledge: 'AWS, Docker, React',
+            cv: 'A link to my CV'
+          }
         }
       }
     }
@@ -54,6 +62,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect(response).to have_http_status(:created)
       expect(parsed_response[:user][:id]).to eq user.id
       expect(parsed_response[:user][:email]).to eq 'user-2@example.com'
+      expect(parsed_response[:user][:profile][:english_level]).to eq 'c1'
+      expect(parsed_response[:user][:profile][:technical_knowledge]).to eq 'AWS, Docker, React'
     end
 
     it 'handles validation error' do

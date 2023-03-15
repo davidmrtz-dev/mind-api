@@ -10,6 +10,9 @@ module Api
 
     def json
       @user.serializable_hash(
+        include: [
+          :profile
+        ],
         except: %i[
           created_at
           updated_at
