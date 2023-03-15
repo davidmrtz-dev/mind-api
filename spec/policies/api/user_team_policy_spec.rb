@@ -24,9 +24,7 @@ RSpec.describe Api::UserTeamPolicy, type: :policy do
     describe '#show?' do
       subject { user_team_policy.apply(:show?) }
 
-      it 'returns true' do
-        is_expected.to be_truthy
-      end
+      include_examples 'not authorized standard user'
     end
 
     describe '#create?' do
