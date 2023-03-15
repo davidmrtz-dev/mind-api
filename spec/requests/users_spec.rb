@@ -5,8 +5,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     login_user
 
     it 'return users' do
-      3.times.each do |num|
-        UserFactory.create(email: "user-#{num}@example.com", password: 'password')
+      3.times do
+        UserFactory.create(password: 'password')
       end
 
       get :index
@@ -66,7 +66,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'PUT /api/users/:id' do
-    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
+    let!(:user) { UserFactory.create(password: 'password') }
+    let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
     subject(:action) {
       put :update, params: {
@@ -104,13 +105,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'DELETE /api/users/:id' do
-    let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
-    let!(:another_user) { UserFactory.create(email: 'user-2@example.com', password: 'password') }
+    let!(:another_user) { UserFactory.create(password: 'password') }
+    let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
     subject(:action) { delete :destroy, params: { id: another_user.id } }
 
     before(:each) do
-      headers = user.create_new_auth_token
+      headers = admin.create_new_auth_token
       request.headers['access-token'] = headers['access-token']
       request.headers['client'] = headers['client']
       request.headers['uid'] = headers['uid']
