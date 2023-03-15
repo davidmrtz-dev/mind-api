@@ -10,7 +10,8 @@ class UserFactory < BaseFactory
   def options(params)
     {
       email: params.fetch(:email, Faker::Internet.email),
-      password: params[:password]
+      password: params[:password],
+      user_type: params.fetch(:user_type, :standard)
     }
   end
 end

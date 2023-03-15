@@ -1,6 +1,6 @@
 class Api::UserPolicy < ApplicationPolicy
   def index?
-    standard? || admin? || super?
+    admin? || super?
   end
 
   def show?
