@@ -8,6 +8,7 @@ account = Account.create!(
 
 3.times.each do |num|
   User.create!(
+    name: Faker::Name.first_name,
     email: "user-#{num}@example.com",
     password: 'password'
   )
@@ -31,3 +32,18 @@ Team.all.each do |team|
 end
 
 UserTeam.create!(team: Team.last, user: User.last, status: :active)
+User.create!(
+  email: 'user@example.com',
+  name: 'David Mtz',
+  password: 'password',
+  user_type: :admin
+)
+
+User.all.each do |user|
+  Profile.create!(
+    user: user,
+    english_level: ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'].sample,
+    technical_knowledge: ['Docker', 'AWS', 'Azure', 'Cloud'].sample,
+    cv: 'https://mycv.com'
+  )
+end
