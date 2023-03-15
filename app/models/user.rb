@@ -8,4 +8,6 @@ class User < ActiveRecord::Base
   has_many :teams, through: :user_teams
 
   enum user_type: { standard: 0, admin: 1, super: 2 }, _default: :standard
+
+  accepts_nested_attributes_for :profile
 end
