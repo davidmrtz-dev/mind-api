@@ -8,7 +8,7 @@ module Api
       before_action :not_allow_self_destroy, only: [:destroy]
 
       def index
-        users = User.all
+        users = User.where.not(id: current_user.id)
 
         page = paginate(
           users,
