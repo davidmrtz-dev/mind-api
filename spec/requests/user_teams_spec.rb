@@ -24,8 +24,8 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
         user_team: {
           user_id: user.id,
           team_id: team.id,
-          start_at: Date.today,
-          end_date: Date.tomorrow,
+          start_at: Time.zone.today,
+          end_at: Time.zone.tomorrow,
           status: 'active'
         }
       }
@@ -38,7 +38,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
 
       action
 
-      user_team = UserTeam.last
+      user_team = UserTeam.first
 
       expect(response).to have_http_status(:created)
       expect(parsed_response[:user_team][:id]).to eq user_team.id

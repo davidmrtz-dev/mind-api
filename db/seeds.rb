@@ -26,6 +26,8 @@ Team.all.each do |team|
     UserTeam.create!(
       team: team,
       user: user,
+      start_at: Time.zone.today,
+      end_at: Time.zone.tomorrow,
       status: :active
     )
   end
