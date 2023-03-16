@@ -7,6 +7,8 @@ class UserTeam < ApplicationRecord
   validates :status, presence: true
   validate :create_date_not_before_today
 
+  default_scope -> { order(created_at: :desc) }
+
   private
 
   def create_date_not_before_today
