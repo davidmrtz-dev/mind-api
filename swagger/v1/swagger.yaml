@@ -1,0 +1,162 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/accounts":
+    get:
+      summary: list accounts
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create account
+      responses:
+        '200':
+          description: successful
+  "/api/v1/accounts/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show account
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update account
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update account
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete account
+      responses:
+        '200':
+          description: successful
+  "/api/v1/teams":
+    get:
+      summary: list teams
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create team
+      responses:
+        '200':
+          description: successful
+  "/api/v1/teams/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show team
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update team
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update team
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete team
+      responses:
+        '200':
+          description: successful
+  "/api/v1/user_teams":
+    get:
+      summary: list user_teams
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create user_team
+      responses:
+        '200':
+          description: successful
+  "/api/v1/user_teams/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update user_team
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update user_team
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete user_team
+      responses:
+        '200':
+          description: successful
+  "/api/v1/users":
+    get:
+      summary: list users
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create user
+      responses:
+        '200':
+          description: successful
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show user
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update user
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update user
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete user
+      responses:
+        '200':
+          description: successful
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
