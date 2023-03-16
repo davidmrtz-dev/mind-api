@@ -8,7 +8,7 @@ module Api
       before_action :not_allow_self_destroy, only: [:destroy]
 
       def index
-        users = User.all
+        users = User.where.not(id: current_user.id)
 
         page = paginate(
           users,
@@ -62,10 +62,11 @@ module Api
 
       def user_params
         params.require(:user).permit(
+          :name,
           :email,
           :password,
           :password_confirmation,
-          :nickname,
+          :user_type,
           profile_attributes: [
             :english_level,
             :technical_knowledge,

@@ -11,6 +11,9 @@ module Api
     def json
       @users.map do |user|
         user.serializable_hash(
+          include: [
+            :profile
+          ],
           except: %i[
             created_at
             updated_at

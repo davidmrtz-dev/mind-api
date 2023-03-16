@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
   enum user_type: { standard: 0, admin: 1, super: 2 }, _default: :standard
 
   accepts_nested_attributes_for :profile
+
+  default_scope -> { where.not(user_type: :super).order(created_at: :desc) }
 end
