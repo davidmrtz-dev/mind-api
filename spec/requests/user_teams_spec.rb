@@ -59,6 +59,46 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     end
   end
 
+  describe 'PUT /api/user_teams/:id' do
+    let!(:user_team) { UserTeamFactory.create(user: user, team: team, status: :active) }
+
+    subject(:action) {
+      put :update, params: {
+        id: user_team.id,
+        user_team: {
+          start_at: user_team.start_at,
+          end_at: user_team.end_at,
+          status: 'inactive'
+        }
+      }
+    }
+
+    login_user
+
+    it 'calls to update the user' do
+      expect(user_team.status).to eq 'active'
+
+      action
+
+      user_team.reload
+
+      expect(response).to have_http_status(:ok)
+      expect(parsed_response[:user_team][:id]).to eq user_team.id
+      expect(user_team.status).to eq 'inactive'
+    end
+
+    it 'handles validation error' do
+      put :update, params: {
+        id: user_team.id,
+        user_team: {
+          status: nil
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
   describe 'DELETE /api/user_teams/:id' do
     let!(:user_team) { UserTeamFactory.create(user: user, team: team) }
 
