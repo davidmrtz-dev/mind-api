@@ -11,6 +11,8 @@ gem 'devise', '~> 4.7', '>= 4.7.3'
 gem 'net-http'
 gem 'rack-cors'
 gem 'faker', '>= 2.13.0'
+gem 'rswag-api'
+gem 'rswag-ui'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -20,6 +22,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'rswag-specs'
 end
 
 group :development do

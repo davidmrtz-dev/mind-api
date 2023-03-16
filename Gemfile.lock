@@ -62,6 +62,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     backport (1.2.0)
     bcrypt (3.1.18)
@@ -117,6 +119,8 @@ GEM
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
     json (2.6.3)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -165,6 +169,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -232,6 +237,16 @@ GEM
       rspec-mocks (~> 3.11)
       rspec-support (~> 3.11)
     rspec-support (3.12.0)
+    rswag-api (2.8.0)
+      railties (>= 3.1, < 7.1)
+    rswag-specs (2.8.0)
+      activesupport (>= 3.1, < 7.1)
+      json-schema (>= 2.2, < 4.0)
+      railties (>= 3.1, < 7.1)
+      rspec-core (>= 2.14)
+    rswag-ui (2.8.0)
+      actionpack (>= 3.1, < 7.1)
+      railties (>= 3.1, < 7.1)
     rubocop (1.48.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -312,6 +327,9 @@ DEPENDENCIES
   rack-cors
   rails (~> 6.1.1)
   rspec-rails
+  rswag-api
+  rswag-specs
+  rswag-ui
   shoulda-matchers
   solargraph
   spring
