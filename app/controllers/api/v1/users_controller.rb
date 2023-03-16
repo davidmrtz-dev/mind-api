@@ -62,10 +62,11 @@ module Api
 
       def user_params
         params.require(:user).permit(
+          :name,
           :email,
           :password,
           :password_confirmation,
-          :nickname,
+          :user_type,
           profile_attributes: [
             :english_level,
             :technical_knowledge,

@@ -11,5 +11,5 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :profile
 
-  default_scope -> { where.not(user_type: :super) }
+  default_scope -> { where.not(user_type: :super).order(created_at: :desc) }
 end
