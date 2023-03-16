@@ -10,6 +10,9 @@ module Api
 
     def json
       @team.serializable_hash(
+        include: [
+          :account
+        ],
         except: %i[
           created_at
           updated_at
