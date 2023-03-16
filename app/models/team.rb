@@ -5,4 +5,6 @@ class Team < ApplicationRecord
   has_many :users, through: :user_teams
 
   validates :name, presence: true
+
+  default_scope -> { order(created_at: :desc) }
 end
