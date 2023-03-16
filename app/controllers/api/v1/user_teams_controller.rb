@@ -34,6 +34,16 @@ module Api
         end
       end
 
+      def update
+        user_team = find_user_team
+
+        if user_team.update(user_team_params)
+          render json: { user_team: ::Api::UserTeamSerializer.json(user_team) }
+        else
+          render json: { errors: user_team.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
       def destroy
         find_user_team.destroy!
 

@@ -14,7 +14,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:users].map { |u| u[:id] }).to match_array(User.ids)
+      expect(parsed_response[:users].map { |u| u[:id] })
+        .to match_array(User.where.not(id: user.id).ids)
     end
   end
 
@@ -57,7 +58,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       action
 
-      user = User.last
+      user = User.first
 
       expect(response).to have_http_status(:created)
       expect(parsed_response[:user][:id]).to eq user.id
@@ -78,14 +79,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'PUT /api/users/:id' do
-    let!(:user) { UserFactory.create(password: 'password') }
     let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
+    let!(:user) { UserFactory.create(password: 'password') }
 
     subject(:action) {
       put :update, params: {
         id: user.id,
         user: {
-          nickname: 'Darth Vader'
+          name: 'Darth Vader'
         }
       }
     }
@@ -101,7 +102,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:user][:id]).to eq user.id
-      expect(user.nickname).to eq 'Darth Vader'
+      expect(user.name).to eq 'Darth Vader'
     end
 
     it 'handles validation error' do
@@ -117,8 +118,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'DELETE /api/users/:id' do
-    let!(:another_user) { UserFactory.create(password: 'password') }
     let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
+    let!(:another_user) { UserFactory.create(password: 'password') }
 
     subject(:action) { delete :destroy, params: { id: another_user.id } }
 

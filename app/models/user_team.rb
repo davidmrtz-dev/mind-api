@@ -5,7 +5,11 @@ class UserTeam < ApplicationRecord
   enum status: { active: 0, inactive: 1 }
 
   validates :status, presence: true
+  validates :start_at, presence: true
+  validates :end_at, presence: true
   validate :create_date_not_before_today
+
+  default_scope -> { order(created_at: :desc) }
 
   private
 
