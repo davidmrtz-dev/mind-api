@@ -5,6 +5,7 @@ teams and logs the history between users and teams.
 
 ## Table of Contents
 
+- [Diagram](#Diagram)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Endpoints](#endpoints)
@@ -12,6 +13,11 @@ teams and logs the history between users and teams.
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
+
+## Diagram
+
+![ERD](./mind-api.jpeg)
+
 
 ## Installation
 
