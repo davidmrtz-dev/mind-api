@@ -11,6 +11,7 @@ teams and logs the history between users and teams.
 - [Endpoints](#endpoints)
 - [Authentication](#authentication)
 - [Testing](#testing)
+- [Swagger](#swagger)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -47,6 +48,14 @@ To authenticate, send a POST request to `/api/v1/auth/sign_in` with a JSON paylo
 ## Testing
 
 To run the test suite, run `bundle exec rspec`.
+
+## Swagger
+
+To open the swagger suite go to:
+
+```
+http://localhost:3000/api-docs/
+```
 
 ## Contributing
 
