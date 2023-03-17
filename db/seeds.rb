@@ -33,7 +33,8 @@ Team.all.each do |team|
   end
 end
 
-UserTeam.create!(team: Team.last, user: User.last, status: :active)
+UserTeam.create!(team: Team.last, user: User.last, status: :active, start_at: Time.zone.today, end_at: Time.zone.tomorrow)
+
 User.create!(
   email: 'user@example.com',
   name: 'David Mtz',
