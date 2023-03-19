@@ -78,21 +78,28 @@ RSpec.describe 'api/v1/accounts', type: :request do
   end
 
   path '/api/v1/accounts/{id}' do
-    # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
-
     get('show account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      response '200', 'Accounts Retrieved' do
+        let!(:account) { AccountFactory.create }
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { account.id }
+
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:account][:id]).to eq account.id
         end
-        run_test!
       end
     end
 
