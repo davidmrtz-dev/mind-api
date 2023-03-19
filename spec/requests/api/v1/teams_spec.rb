@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/teams', type: :request do
   path '/api/v1/teams' do
-    get('Retrieves teams') do
+    get('Retrieves a list of teams') do
       tags 'Teams'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -26,7 +26,7 @@ RSpec.describe 'api/v1/teams', type: :request do
       end
     end
 
-    post('Creates team') do
+    post('Creates a team') do
       tags 'Teams'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -92,7 +92,7 @@ RSpec.describe 'api/v1/teams', type: :request do
         let(:'access-token') { hdrs['access-token'] }
         let(:client) { hdrs['client']}
         let(:uid) { hdrs['uid'] }
-        let(:id) { account.id }
+        let(:id) { team.id }
 
         run_test! do |response|
           expect(response).to have_http_status(:ok)
@@ -158,7 +158,7 @@ RSpec.describe 'api/v1/teams', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '204', 'Account deleted' do
+      response '204', 'Team deleted' do
         let!(:account) { AccountFactory.create }
         let!(:team) { TeamFactory.create(account: account) }
         let!(:admin) { UserFactory.create(user_type: :admin) }
@@ -166,7 +166,7 @@ RSpec.describe 'api/v1/teams', type: :request do
         let(:'access-token') { hdrs['access-token'] }
         let(:client) { hdrs['client']}
         let(:uid) { hdrs['uid'] }
-        let(:id) { account.id }
+        let(:id) { team.id }
 
         run_test! do |response|
           expect(response).to have_http_status(:no_content)

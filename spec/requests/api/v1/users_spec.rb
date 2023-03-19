@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/users', type: :request do
   path '/api/v1/users' do
-    get('Retrieves users') do
+    get('Retrieves a list of users') do
       tags 'Users'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -25,7 +25,7 @@ RSpec.describe 'api/v1/users', type: :request do
       end
     end
 
-    post('create user') do
+    post('Creates a user') do
       tags 'Users'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]

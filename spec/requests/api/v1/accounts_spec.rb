@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/accounts', type: :request do
   path '/api/v1/accounts' do
-    get('Retrieves accounts') do
+    get('Retrieves a list of accounts') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -25,7 +25,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       end
     end
 
-    post('Creates account') do
+    post('Creates an account') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -166,7 +166,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       end
     end
 
-    delete('delete account') do
+    delete('Deletes an account') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]

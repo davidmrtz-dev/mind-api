@@ -3,7 +3,7 @@ require 'swagger_helper'
 RSpec.describe 'api/v1/user_teams', type: :request do
 
   path '/api/v1/user_teams' do
-    get('Retrieves user_teams') do
+    get('Retrieves a list of user_teams') do
       tags 'UserTeams'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -11,7 +11,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Teams retrieved' do
+      response '200', 'UserTeams retrieved' do
         let!(:account) { AccountFactory.create }
         let!(:team) { TeamFactory.create(account: account) }
         let!(:user) { UserFactory.create }
@@ -29,7 +29,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
       end
     end
 
-    post('Creates user_team') do
+    post('Creates a user_team') do
       tags 'UserTeams'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -55,7 +55,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         required: %(user_team)
       }
 
-      response '201', 'Team created' do
+      response '201', 'UserTeam created' do
         let!(:account) { AccountFactory.create }
         let!(:team) { TeamFactory.create(account: account) }
         let!(:user) { UserFactory.create }
@@ -113,7 +113,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         required: %(user_team)
       }
 
-      response '200', 'Team updated' do
+      response '200', 'UserTeam updated' do
         let!(:account) { AccountFactory.create }
         let!(:team) { TeamFactory.create(account: account) }
         let!(:user) { UserFactory.create }
@@ -151,7 +151,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '204', 'Account deleted' do
+      response '204', 'UserTeam deleted' do
         let!(:account) { AccountFactory.create }
         let!(:team) { TeamFactory.create(account: account) }
         let!(:user) { UserFactory.create }
