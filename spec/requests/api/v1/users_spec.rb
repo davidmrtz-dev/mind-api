@@ -79,7 +79,7 @@ RSpec.describe 'api/v1/users', type: :request do
 
   path '/api/v1/users/{id}' do
     get('Retrieves a user') do
-      tags 'Accounts'
+      tags 'Users'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
@@ -103,33 +103,57 @@ RSpec.describe 'api/v1/users', type: :request do
       end
     end
 
-    patch('update user') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    put('Updates a user') do
+      tags 'Users'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              name: { type: :string },
+              email: { type: :string },
+              user_type: { type: :string }
+            },
+            required: %w(name email password)
+          }
+        },
+        required: %(user)
+      }
+
+      response '200', 'User updated' do
+        let!(:user) { UserFactory.create }
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { user.id }
+
+        let!(:params) do
+          {
+            user: {
+              name: 'Albert Einstein',
+              email: 'albert@example.com',
+              user_type: 'admin'
             }
           }
         end
-        run_test!
-      end
-    end
 
-    put('update user') do
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:user][:id]).to eq user.id
+          expect(parsed_response[:user][:name]).to eq 'Albert Einstein'
+          expect(parsed_response[:user][:email]).to eq 'albert@example.com'
+          expect(parsed_response[:user][:user_type]).to eq 'admin'
         end
-        run_test!
       end
     end
 
