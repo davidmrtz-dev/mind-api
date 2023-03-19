@@ -10,32 +10,69 @@ RSpec.describe 'api/v1/users', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Accounts retrieved' do
-        let!(:user) { UserFactory.create(user_type: :admin) }
-        let!(:another_user) { UserFactory.create }
-        let!(:hdrs) { user.create_new_auth_token }
+      response '200', 'Users retrieved' do
+        let!(:standard_user) { UserFactory.create }
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
         let(:client) { hdrs['client']}
         let(:uid) { hdrs['uid'] }
 
         run_test! do |response|
           expect(response).to have_http_status(:ok)
-          expect(parsed_response[:users].first[:id]).to eq another_user.id
+          expect(parsed_response[:users].first[:id]).to eq standard_user.id
         end
       end
     end
 
     post('create user') do
-      response(200, 'successful') do
+      tags 'Users'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              name: { type: :string },
+              email: { type: :string },
+              password: { type: :string },
+              password_confirmation: { type: :string },
+              user_type: { type: :string }
+            },
+            required: %w(name email password)
+          }
+        },
+        required: %(user)
+      }
+
+      response '201', 'User created' do
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let!(:params) do
+          {
+            user: {
+              name: 'Mickey Mouse',
+              email: 'mickey@example.com',
+              password: 'password',
+              password_confirmation: 'password',
+              user_type: 'standard'
             }
           }
         end
-        run_test!
+
+        run_test! do |response|
+          expect(response).to have_http_status(:created)
+          expect(parsed_response[:user][:id]).to eq User.first.id
+        end
       end
     end
   end
