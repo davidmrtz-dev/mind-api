@@ -1,99 +1,198 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/accounts', type: :request do
-
   path '/api/v1/accounts' do
+    get('Retrieves accounts') do
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-    get('list accounts') do
-      response(200, 'successful') do
+      response '200', 'Accounts retrieved' do
+        let!(:account) { AccountFactory.create }
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:accounts].first[:id]).to eq account.id
         end
-        run_test!
       end
     end
 
-    post('create account') do
-      response(200, 'successful') do
+    post('Creates account') do
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account: {
+            type: :object,
+            properties: {
+              client_name: { type: :string },
+              manager_name: { type: :string },
+              name: { type: :string }
+            },
+            required: %w(name)
+          }
+        },
+        required: %(account)
+      }
+
+      response '201', 'Account created' do
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+
+        let(:'client_name') { 'Elon Musk' }
+        let(:manager_name) { 'Micky Mouse' }
+        let(:name) { 'Obsidian' }
+        let!(:params) do
+          {
+            account: {
+              name: name,
+              client_name: client_name,
+              manager_name: manager_name
             }
           }
         end
-        run_test!
+
+        run_test! do |response|
+          expect(response).to have_http_status(:created)
+          expect(parsed_response[:account][:id]).to eq Account.first.id
+        end
       end
     end
   end
 
   path '/api/v1/accounts/{id}' do
-    # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+    get('Retrieves an account') do
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-    get('show account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+      response '200', 'Account retrieved' do
+        let!(:account) { AccountFactory.create }
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { account.id }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:account][:id]).to eq account.id
         end
-        run_test!
       end
     end
 
-    patch('update account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    put('Updates an account') do
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account: {
+            type: :object,
+            properties: {
+              client_name: { type: :string },
+              manager_name: { type: :string },
+              name: { type: :string }
+            },
+            required: %w(name)
+          }
+        },
+        required: %(account)
+      }
+
+      response '200', 'Account updated' do
+        let!(:account) do
+          AccountFactory.create(
+            name: 'Account name',
+            client_name: 'Client name',
+            manager_name: 'Manager Name'
+          )
+        end
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { account.id }
+
+        let(:'client_name') { 'Elon Musk' }
+        let(:manager_name) { 'Mickey Mouse' }
+        let(:name) { 'Obsidian' }
+        let!(:params) do
+          {
+            account: {
+              name: name,
+              client_name: client_name,
+              manager_name: manager_name
             }
           }
         end
-        run_test!
-      end
-    end
 
-    put('update account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:account][:id]).to eq account.id
+          expect(parsed_response[:account][:client_name]).to eq 'Elon Musk'
+          expect(parsed_response[:account][:manager_name]).to eq 'Mickey Mouse'
+          expect(parsed_response[:account][:name]).to eq 'Obsidian'
         end
-        run_test!
       end
     end
 
     delete('delete account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      response '204', 'Account deleted' do
+        let!(:account) do
+          AccountFactory.create(
+            name: 'Account name',
+            client_name: 'Client name',
+            manager_name: 'Manager Name'
+          )
         end
-        run_test!
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { account.id }
+
+        run_test! do |response|
+          expect(response).to have_http_status(:no_content)
+        end
       end
     end
   end
