@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/accounts', type: :request do
   path '/api/v1/accounts' do
-    get('list accounts') do
+    get('Retrieves accounts') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -10,7 +10,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Accounts Retrieved' do
+      response '200', 'Accounts retrieved' do
         let!(:account) { AccountFactory.create }
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
@@ -25,7 +25,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       end
     end
 
-    post('create account') do
+    post('Creates account') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -49,7 +49,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
         required: %(account)
       }
 
-      response '201', 'Account Created' do
+      response '201', 'Account created' do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
@@ -78,7 +78,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
   end
 
   path '/api/v1/accounts/{id}' do
-    get('show account') do
+    get('Retrieves an account') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -87,7 +87,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Accounts Retrieved' do
+      response '200', 'Account retrieved' do
         let!(:account) { AccountFactory.create }
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
@@ -103,7 +103,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
       end
     end
 
-    put('update account') do
+    put('Updates an account') do
       tags 'Accounts'
       consumes 'application/json'
       security ['access-token':[], client: [], uid: []]
@@ -128,7 +128,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
         required: %(account)
       }
 
-      response '200', 'Accounts Retrieved' do
+      response '200', 'Account updated' do
         let!(:account) do
           AccountFactory.create(
             name: 'Account name',
@@ -167,17 +167,32 @@ RSpec.describe 'api/v1/accounts', type: :request do
     end
 
     delete('delete account') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      response '204', 'Account deleted' do
+        let!(:account) do
+          AccountFactory.create(
+            name: 'Account name',
+            client_name: 'Client name',
+            manager_name: 'Manager Name'
+          )
         end
-        run_test!
+        let!(:user) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { user.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { account.id }
+
+        run_test! do |response|
+          expect(response).to have_http_status(:no_content)
+        end
       end
     end
   end
