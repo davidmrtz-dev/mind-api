@@ -26,17 +26,50 @@ RSpec.describe 'api/v1/teams', type: :request do
       end
     end
 
-    post('create team') do
-      response(200, 'successful') do
+    post('Creates team') do
+      tags 'Teams'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          team: {
+            type: :object,
+            properties: {
+              account_id: { type: :number },
+              name: { type: :string }
+            },
+            required: %w(account_id name)
+          }
+        },
+        required: %(team)
+      }
+
+      response '201', 'Team created' do
+        let!(:account) { AccountFactory.create }
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+
+        let!(:params) do
+          {
+            team: {
+              account_id: account.id,
+              name: 'Maze Runners',
             }
           }
         end
-        run_test!
+
+        run_test! do |response|
+          expect(response).to have_http_status(:created)
+          expect(parsed_response[:team][:id]).to eq Team.first.id
+        end
       end
     end
   end
