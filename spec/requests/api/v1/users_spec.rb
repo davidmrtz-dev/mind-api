@@ -78,21 +78,28 @@ RSpec.describe 'api/v1/users', type: :request do
   end
 
   path '/api/v1/users/{id}' do
-    # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+    get('Retrieves a user') do
+      tags 'Accounts'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-    get('show user') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+      response '200', 'User retrieved' do
+        let!(:user) { UserFactory.create }
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { user.id }
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          expect(response).to have_http_status(:ok)
+          expect(parsed_response[:user][:id]).to eq user.id
         end
-        run_test!
       end
     end
 
