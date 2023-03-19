@@ -157,18 +157,27 @@ RSpec.describe 'api/v1/users', type: :request do
       end
     end
 
-    delete('delete user') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    delete('Deletes a user') do
+      tags 'Users'
+      consumes 'application/json'
+      security ['access-token':[], client: [], uid: []]
+      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'access-token', in: :header, type: :string
+      parameter name: 'client', in: :header, type: :string
+      parameter name: 'uid', in: :header, type: :string
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+      response '204', 'User deleted' do
+        let!(:user) { UserFactory.create }
+        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:hdrs) { admin.create_new_auth_token }
+        let(:'access-token') { hdrs['access-token'] }
+        let(:client) { hdrs['client']}
+        let(:uid) { hdrs['uid'] }
+        let(:id) { user.id }
+
+        run_test! do |response|
+          expect(response).to have_http_status(:no_content)
         end
-        run_test!
       end
     end
   end
