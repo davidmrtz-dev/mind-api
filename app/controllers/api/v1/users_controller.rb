@@ -67,10 +67,10 @@ module Api
           :password,
           :password_confirmation,
           :user_type,
-          profile_attributes: [
-            :english_level,
-            :technical_knowledge,
-            :cv
+          profile_attributes: %i[
+            english_level
+            technical_knowledge
+            cv
           ]
         )
       end
