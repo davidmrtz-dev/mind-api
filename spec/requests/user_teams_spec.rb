@@ -9,17 +9,17 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     login_user
 
     it 'returns the user_teams relations' do
-      3.times { UserTeamFactory.create(user: user, team: team, status: :active)  }
+      3.times { UserTeamFactory.create(user: user, team: team, status: :active) }
 
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:user_teams].map { |u| u[:id] }).to match_array(UserTeam.ids)
+      expect(parsed_response[:user_teams].pluck(:id)).to match_array(UserTeam.ids)
     end
   end
 
   describe 'POST /api/user_teams' do
-    subject(:action) {
+    subject(:action) do
       post :create, params: {
         user_team: {
           user_id: user.id,
@@ -29,7 +29,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
           status: 'active'
         }
       }
-    }
+    end
 
     login_user
 
@@ -62,14 +62,14 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
   describe 'PUT /api/user_teams/:id' do
     let!(:user_team) { UserTeamFactory.create(user: user, team: team, status: :active) }
 
-    subject(:action) {
+    subject(:action) do
       put :update, params: {
         id: user_team.id,
         user_team: {
           status: 'inactive'
         }
       }
-    }
+    end
 
     login_user
 
@@ -105,7 +105,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     login_user
 
     it 'calls to delete the user_team' do
-      expect { action }.to change { UserTeam.count }.by (-1)
+      expect { action }.to change { UserTeam.count }.by(-1)
 
       action
 

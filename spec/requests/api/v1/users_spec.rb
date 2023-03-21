@@ -5,7 +5,7 @@ RSpec.describe 'api/v1/users', type: :request do
     get('Retrieves a list of users') do
       tags 'Users'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -15,7 +15,7 @@ RSpec.describe 'api/v1/users', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         run_test! do |response|
@@ -28,7 +28,7 @@ RSpec.describe 'api/v1/users', type: :request do
     post('Creates a user') do
       tags 'Users'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -45,7 +45,7 @@ RSpec.describe 'api/v1/users', type: :request do
               password_confirmation: { type: :string },
               user_type: { type: :string }
             },
-            required: %w(name email password)
+            required: %w[name email password]
           }
         },
         required: %(user)
@@ -55,7 +55,7 @@ RSpec.describe 'api/v1/users', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let!(:params) do
           {
@@ -81,7 +81,7 @@ RSpec.describe 'api/v1/users', type: :request do
     get('Retrieves a user') do
       tags 'Users'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -92,7 +92,7 @@ RSpec.describe 'api/v1/users', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { user.id }
 
@@ -106,7 +106,7 @@ RSpec.describe 'api/v1/users', type: :request do
     put('Updates a user') do
       tags 'Users'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -122,7 +122,7 @@ RSpec.describe 'api/v1/users', type: :request do
               email: { type: :string },
               user_type: { type: :string }
             },
-            required: %w(name email password)
+            required: %w[name email password]
           }
         },
         required: %(user)
@@ -133,7 +133,7 @@ RSpec.describe 'api/v1/users', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { user.id }
 
@@ -160,7 +160,7 @@ RSpec.describe 'api/v1/users', type: :request do
     delete('Deletes a user') do
       tags 'Users'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -171,7 +171,7 @@ RSpec.describe 'api/v1/users', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { user.id }
 

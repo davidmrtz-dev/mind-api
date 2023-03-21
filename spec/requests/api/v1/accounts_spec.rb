@@ -5,7 +5,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
     get('Retrieves a list of accounts') do
       tags 'Accounts'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -15,7 +15,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         run_test! do |response|
@@ -28,7 +28,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
     post('Creates an account') do
       tags 'Accounts'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -43,7 +43,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
               manager_name: { type: :string },
               name: { type: :string }
             },
-            required: %w(name)
+            required: %w[name]
           }
         },
         required: %(account)
@@ -53,10 +53,10 @@ RSpec.describe 'api/v1/accounts', type: :request do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
-        let(:'client_name') { 'Elon Musk' }
+        let(:client_name) { 'Elon Musk' }
         let(:manager_name) { 'Micky Mouse' }
         let(:name) { 'Obsidian' }
         let!(:params) do
@@ -81,7 +81,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
     get('Retrieves an account') do
       tags 'Accounts'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -92,7 +92,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { account.id }
 
@@ -106,7 +106,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
     put('Updates an account') do
       tags 'Accounts'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -122,7 +122,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
               manager_name: { type: :string },
               name: { type: :string }
             },
-            required: %w(name)
+            required: %w[name]
           }
         },
         required: %(account)
@@ -139,11 +139,11 @@ RSpec.describe 'api/v1/accounts', type: :request do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { account.id }
 
-        let(:'client_name') { 'Elon Musk' }
+        let(:client_name) { 'Elon Musk' }
         let(:manager_name) { 'Mickey Mouse' }
         let(:name) { 'Obsidian' }
         let!(:params) do
@@ -169,7 +169,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
     delete('Deletes an account') do
       tags 'Accounts'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -186,7 +186,7 @@ RSpec.describe 'api/v1/accounts', type: :request do
         let!(:user) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { user.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { account.id }
 

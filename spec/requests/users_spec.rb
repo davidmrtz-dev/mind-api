@@ -14,7 +14,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:users].map { |u| u[:id] })
+      expect(parsed_response[:users].pluck(:id))
         .to match_array(User.where.not(id: user.id).ids)
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'POST /api/users' do
-    subject(:action) {
+    subject(:action) do
       post :create, params: {
         user: {
           email: 'user-2@example.com',
@@ -49,7 +49,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
           }
         }
       }
-    }
+    end
 
     login_user
 
@@ -82,14 +82,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
     let!(:user) { UserFactory.create(password: 'password') }
 
-    subject(:action) {
+    subject(:action) do
       put :update, params: {
         id: user.id,
         user: {
           name: 'Darth Vader'
         }
       }
-    }
+    end
 
     login_user
 
@@ -131,7 +131,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'calls to delete the user' do
-      expect { action }.to change { User.count }.by (-1)
+      expect { action }.to change { User.count }.by(-1)
 
       action
 
