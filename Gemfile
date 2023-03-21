@@ -23,6 +23,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'rswag-specs'
+  gem 'rubocop'
+  gem 'rubocop-rails'
 end
 
 group :development do

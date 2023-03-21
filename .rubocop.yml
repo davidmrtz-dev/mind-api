@@ -1,0 +1,91 @@
+require: rubocop-rails
+
+AllCops:
+  SuggestExtensions: false
+  Exclude:
+    - bin/*
+    - db/*
+    - db/migrate/*
+    - db/seeds/*
+    - Guardfile
+    - spec/factories/*
+    - lib/fsmb/pdc_client.rb
+    - vendor/**/*
+  NewCops:
+    enable
+
+Lint/SymbolConversion:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/MutableConstant:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/LineLength:
+  Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/MethodLength:
+  Max: 35
+  Exclude:
+    - app/controllers/api/cyberwrite_informations_controller.rb
+    - lib/hubspot/*
+
+Metrics/AbcSize:
+  Exclude:
+    - lib/hubspot/*
+    - lib/npi/*
+    - app/searchers/*
+    - spec/factories/*
+    - spec/support/*
+    - spec/rails_helper.rb
+
+Metrics/ClassLength:
+  Max: 155
+
+Style/Documentation:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/HashAsLastArrayItem:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Rails/ApplicationController:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Rails/EnvironmentVariableAccess:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/**/*
