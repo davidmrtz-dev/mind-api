@@ -11,7 +11,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:accounts].map { |a| a[:id] }).to match_array(Account.ids)
+      expect(parsed_response[:accounts].pluck(:id)).to match_array(Account.ids)
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
   end
 
   describe 'POST /api/accounts' do
-    subject(:action) {
+    subject(:action) do
       post :create, params: {
         account: {
           client_name: 'Bart Simpson',
@@ -37,7 +37,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
           name: 'Maze Runners'
         }
       }
-    }
+    end
 
     login_user
 
@@ -67,7 +67,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
   describe 'PUT /api/accounts/:id' do
     let(:account) { AccountFactory.create(manager_name: nil) }
 
-    subject(:action) {
+    subject(:action) do
       put :update, params: {
         id: account.id,
         account: {
@@ -75,7 +75,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
           name: 'The Dorilocos'
         }
       }
-    }
+    end
 
     login_user
 
@@ -111,7 +111,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     login_user
 
     it 'calls to delete the account' do
-      expect { action }.to change { Account.count }.by (-1)
+      expect { action }.to change { Account.count }.by(-1)
 
       action
 

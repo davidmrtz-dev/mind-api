@@ -5,7 +5,7 @@ RSpec.describe 'api/v1/teams', type: :request do
     get('Retrieves a list of teams') do
       tags 'Teams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -16,7 +16,7 @@ RSpec.describe 'api/v1/teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         run_test! do |response|
@@ -29,7 +29,7 @@ RSpec.describe 'api/v1/teams', type: :request do
     post('Creates a team') do
       tags 'Teams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -43,7 +43,7 @@ RSpec.describe 'api/v1/teams', type: :request do
               account_id: { type: :number },
               name: { type: :string }
             },
-            required: %w(account_id name)
+            required: %w[account_id name]
           }
         },
         required: %(team)
@@ -54,14 +54,14 @@ RSpec.describe 'api/v1/teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         let!(:params) do
           {
             team: {
               account_id: account.id,
-              name: 'Maze Runners',
+              name: 'Maze Runners'
             }
           }
         end
@@ -78,7 +78,7 @@ RSpec.describe 'api/v1/teams', type: :request do
     get('Retrieves a team') do
       tags 'Teams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -90,7 +90,7 @@ RSpec.describe 'api/v1/teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { team.id }
 
@@ -104,7 +104,7 @@ RSpec.describe 'api/v1/teams', type: :request do
     put('Updates a team') do
       tags 'Teams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -118,7 +118,7 @@ RSpec.describe 'api/v1/teams', type: :request do
             properties: {
               name: { type: :string }
             },
-            required: %w(name)
+            required: %w[name]
           }
         },
         required: %(team)
@@ -130,13 +130,13 @@ RSpec.describe 'api/v1/teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { team.id }
         let!(:params) do
           {
             team: {
-              name: 'Another name',
+              name: 'Another name'
             }
           }
         end
@@ -152,7 +152,7 @@ RSpec.describe 'api/v1/teams', type: :request do
     delete('Deletes a team') do
       tags 'Teams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -164,7 +164,7 @@ RSpec.describe 'api/v1/teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { team.id }
 

@@ -1,12 +1,11 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/user_teams', type: :request do
-
   path '/api/v1/user_teams' do
     get('Retrieves a list of user_teams') do
       tags 'UserTeams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -19,7 +18,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         run_test! do |response|
@@ -32,7 +31,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
     post('Creates a user_team') do
       tags 'UserTeams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
@@ -49,7 +48,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
               end_at: { type: :string },
               status: { type: :string }
             },
-            required: %w(user_id team_id start_at end_at status)
+            required: %w[user_id team_id start_at end_at status]
           }
         },
         required: %(user_team)
@@ -62,7 +61,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
 
         let!(:params) do
@@ -89,7 +88,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
     put('Updates a user_team') do
       tags 'UserTeams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -107,7 +106,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
               end_at: { type: :string },
               status: { type: :string }
             },
-            required: %w(user_id team_id start_at end_at status)
+            required: %w[user_id team_id start_at end_at status]
           }
         },
         required: %(user_team)
@@ -121,7 +120,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { user_team.id }
         let!(:params) do
@@ -145,7 +144,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
     delete('Deletes a user_team') do
       tags 'UserTeams'
       consumes 'application/json'
-      security ['access-token':[], client: [], uid: []]
+      security ['access-token': [], client: [], uid: []]
       parameter name: 'id', in: :path, type: :string, description: 'id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
@@ -159,7 +158,7 @@ RSpec.describe 'api/v1/user_teams', type: :request do
         let!(:admin) { UserFactory.create(user_type: :admin) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client']}
+        let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
         let(:id) { user_team.id }
 

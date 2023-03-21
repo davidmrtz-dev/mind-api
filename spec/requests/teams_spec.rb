@@ -13,7 +13,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
       get :index
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:teams].map { |t| t[:id] }).to match_array(Team.ids)
+      expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
     end
   end
 
@@ -31,14 +31,14 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   end
 
   describe 'POST /api/teams' do
-    subject(:action) {
+    subject(:action) do
       post :create, params: {
         team: {
           account_id: account.id,
           name: 'Maze Runners'
         }
       }
-    }
+    end
 
     login_user
 
@@ -70,14 +70,14 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   describe 'PUT /api/teams/:id' do
     let(:team) { TeamFactory.create(account: account, name: 'Maze Runners') }
 
-    subject(:action) {
+    subject(:action) do
       put :update, params: {
         id: team.id,
         team: {
           name: 'Falcons'
         }
       }
-    }
+    end
 
     login_user
 
@@ -113,7 +113,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     login_user
 
     it 'calls to delete the team' do
-      expect { action }.to change { Team.count }.by (-1)
+      expect { action }.to change { Team.count }.by(-1)
 
       action
 

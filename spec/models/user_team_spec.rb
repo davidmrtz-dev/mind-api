@@ -13,7 +13,7 @@ RSpec.describe UserTeam, type: :model do
 
     describe '#end_at_not_before_today' do
       it 'should not allow an end_date before today' do
-        user_team = UserTeam.new(user: user, team: team, status: :inactive, end_at: Time.zone.now - 5.days)
+        user_team = UserTeam.new(user: user, team: team, status: :inactive, end_at: 5.days.ago)
         expect(user_team.valid?).to be_falsey
         expect(user_team.errors.full_messages).to include('End date cannot be before today')
       end
