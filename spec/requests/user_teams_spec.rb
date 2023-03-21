@@ -8,7 +8,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
   describe 'GET /api/user_teams' do
     login_user
 
-    it 'returns the user teams realations' do
+    it 'returns the user_teams relations' do
       3.times { UserTeamFactory.create(user: user, team: team, status: :active)  }
 
       get :index
@@ -66,8 +66,6 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
       put :update, params: {
         id: user_team.id,
         user_team: {
-          start_at: user_team.start_at,
-          end_at: user_team.end_at,
           status: 'inactive'
         }
       }
@@ -75,7 +73,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
 
     login_user
 
-    it 'calls to update the user' do
+    it 'calls to update the user_team' do
       expect(user_team.status).to eq 'active'
 
       action
