@@ -8,7 +8,7 @@ teams and logs the history between users and teams.
 - [Diagram](#Diagram)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Endpoints](#endpoints)
+- [Postman](#postman)
 - [Authentication](#authentication)
 - [Testing](#testing)
 - [Swagger](#swagger)
@@ -33,13 +33,13 @@ To retrieve a list of all resources, send a GET request to `/resources`. To retr
 
 To create a new resource, send a POST request to `/resources` with the resource attributes in the request body.
 
-## Endpoints
+## Postman
 
-In order to list all the available endpoints run: 
-
+You will find a postman collection and environment configuration at
 ```
-rails routes -E
+/doc/postman
 ```
+There are all the neccessary files to setup the postman suite and start making calls to the API.
 
 ## Authentication
 

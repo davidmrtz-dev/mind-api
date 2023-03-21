@@ -7,7 +7,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   describe 'GET /api/teams' do
     login_user
 
-    it 'returns the accounts' do
+    it 'returns the teams' do
       3.times { TeamFactory.create(account: account) }
 
       get :index
@@ -22,7 +22,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
 
     login_user
 
-    it 'returns an account' do
+    it 'returns a team' do
       get :show, params: { id: team.id }
 
       expect(response).to have_http_status(:ok)
