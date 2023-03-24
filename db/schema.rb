@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 2023_03_15_031837) do
 
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "english_level"
-    t.text "technical_knowledge"
+    t.integer "english_level", default: 0, null: false
+    t.text "technical_knowledge", null: false
     t.string "cv"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
