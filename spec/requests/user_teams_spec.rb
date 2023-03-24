@@ -7,9 +7,9 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
 
   describe 'GET /api/user_teams' do
     login_user
+    before { UserTeamFactory.create(user: user, team: team, status: :active) }
 
     it 'returns the user_teams relations' do
-      3.times { UserTeamFactory.create(user: user, team: team, status: :active) }
 
       get :index
 
