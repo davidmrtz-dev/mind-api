@@ -65,12 +65,13 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
   end
 
   describe 'PUT /api/accounts/:id' do
-    let(:account) { AccountFactory.create(manager_name: nil) }
+    let(:account) { AccountFactory.create }
 
     subject(:action) do
       put :update, params: {
         id: account.id,
         account: {
+          client_name: 'Skywalker',
           manager_name: 'Obi Wan Kenobi',
           name: 'The Dorilocos'
         }
@@ -80,8 +81,6 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     login_user
 
     it 'calls to update the account' do
-      expect(account.manager_name).to eq nil
-
       action
 
       account.reload
@@ -89,6 +88,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:account][:id]).to eq account.id
       expect(account.manager_name).to eq 'Obi Wan Kenobi'
+      expect(account.client_name).to eq 'Skywalker'
     end
 
     it 'handles validation error' do
