@@ -11,6 +11,9 @@ module Api
     def json
       @accounts.map do |account|
         account.serializable_hash(
+          include: [
+            :teams
+          ],
           except: %i[
             created_at
             updated_at
