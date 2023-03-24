@@ -14,5 +14,6 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :profile
 
-  default_scope -> { where.not(user_type: :super).order(created_at: :desc) }
+  default_scope -> { order(created_at: :desc) }
+  scope :not_include_super, -> { where.not(user_type: :super) }
 end
