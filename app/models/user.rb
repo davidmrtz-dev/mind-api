@@ -7,7 +7,10 @@ class User < ApplicationRecord
   has_many :user_teams
   has_many :teams, through: :user_teams
 
-  enum user_type: { standard: 0, admin: 1, super: 2 }, _default: :standard
+  enum user_type: { standard: 0, admin: 1, super: 2 }
+
+  validates :name, presence: true
+  validates :user_type, presence: true
 
   accepts_nested_attributes_for :profile
 

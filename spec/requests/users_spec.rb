@@ -39,6 +39,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     subject(:action) do
       post :create, params: {
         user: {
+          name: 'Alfonso',
           email: 'user-2@example.com',
           password: 'password',
           password_confirmation: 'password',
