@@ -6,8 +6,6 @@ RSpec.describe Account, type: :model do
   end
 
   describe 'validations' do
-    it { should allow_value('A client name').for(:client_name) }
-    it { should allow_value('Jhon Doe').for(:manager_name) }
-    it { should allow_value('Maze Runners').for(:name) }
+    it { should validate_presence_of(:name) }
   end
 end
