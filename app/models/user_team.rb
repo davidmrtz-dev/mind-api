@@ -7,6 +7,7 @@ class UserTeam < ApplicationRecord
   validates :start_at, presence: true
   validates :end_at, presence: true
   validates :status, presence: true
+  validates :user_id, uniqueness: { scope: :team_id }
   validate :end_at_not_before_today, on: [:create]
 
   default_scope -> { order(created_at: :desc) }
