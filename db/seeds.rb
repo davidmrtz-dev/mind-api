@@ -1,5 +1,8 @@
 return unless Rails.env.development? || Rails.env.staging?
 
+TECHNOLOGIES = ['Docker', 'AWS', 'Azure', 'React', 'SQL', 'Redux', 'Postgres', '.NET', 'Bash', 'RoR']
+ENGLISH_LEVELS = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2']
+
 account = Account.create!(
   client_name: 'Homero Simpson',
   manager_name: 'Steve Jobs',
@@ -7,10 +10,15 @@ account = Account.create!(
 )
 
 3.times.each do |num|
-  User.create!(
+  user = User.create!(
     name: Faker::Name.first_name,
     email: "user-#{num}@example.com",
     password: 'password'
+  )
+  user.profile.create!(
+    english_level: ENGLISH_LEVELS.sample,
+    technical_knowledge: TECHNOLOGIES.take(3).join(', '),
+    cv: "https://user-#{num}-cv.com"
   )
 end
 
@@ -41,12 +49,3 @@ User.create!(
   password: 'password',
   user_type: :admin
 )
-
-User.all.each do |user|
-  Profile.create!(
-    user: user,
-    english_level: ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'].sample,
-    technical_knowledge: ['Docker', 'AWS', 'Azure', 'Cloud'].sample,
-    cv: 'https://mycv.com'
-  )
-end
