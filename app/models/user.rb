@@ -4,7 +4,7 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   has_one :profile, dependent: :destroy
-  has_many :user_teams
+  has_many :user_teams, dependent: :destroy
   has_many :teams, through: :user_teams
 
   enum user_type: { standard: 0, admin: 1, super: 2 }
