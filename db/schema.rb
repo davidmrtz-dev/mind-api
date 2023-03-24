@@ -16,17 +16,17 @@ ActiveRecord::Schema.define(version: 2023_03_15_031837) do
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "client_name"
-    t.string "manager_name"
-    t.string "name"
+    t.string "client_name", null: false
+    t.string "manager_name", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "english_level"
-    t.text "technical_knowledge"
+    t.integer "english_level", default: 0, null: false
+    t.text "technical_knowledge", null: false
     t.string "cv"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

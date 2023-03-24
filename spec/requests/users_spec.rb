@@ -21,7 +21,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe 'GET /api/users/:id' do
     let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
-    let!(:profile) { ProfileFactory.create(user: user) }
+    let!(:profile) { ProfileFactory.create(user: user, english_level: :c1, technical_knowledge: 'Docker') }
 
     login_user
 
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:user][:id]).to eq user.id
-      expect(parsed_response[:user][:profile][:english_level]).to eq 'a1'
+      expect(parsed_response[:user][:profile][:english_level]).to eq 'c1'
       expect(parsed_response[:user][:profile][:technical_knowledge]).to eq 'Docker'
     end
   end
