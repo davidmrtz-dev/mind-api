@@ -12,7 +12,8 @@ module Api
       @users.map do |user|
         user.serializable_hash(
           include: [
-            :profile
+            :profile,
+            :teams
           ],
           except: %i[
             created_at
