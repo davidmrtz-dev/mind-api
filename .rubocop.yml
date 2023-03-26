@@ -37,15 +37,9 @@ Layout/MultilineMethodCallIndentation:
 
 Metrics/MethodLength:
   Max: 35
-  Exclude:
-    - app/controllers/api/cyberwrite_informations_controller.rb
-    - lib/hubspot/*
 
 Metrics/AbcSize:
   Exclude:
-    - lib/hubspot/*
-    - lib/npi/*
-    - app/searchers/*
     - spec/factories/*
     - spec/support/*
     - spec/rails_helper.rb
