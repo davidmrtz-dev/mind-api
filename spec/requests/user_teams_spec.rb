@@ -10,7 +10,6 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     before { UserTeamFactory.create(user: user, team: team, status: :active) }
 
     it 'returns the user_teams relations' do
-
       get :index
 
       expect(response).to have_http_status(:ok)
