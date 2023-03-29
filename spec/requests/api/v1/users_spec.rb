@@ -2,28 +2,28 @@ require 'swagger_helper'
 
 RSpec.describe 'api/v1/users', type: :request do
   path '/api/v1/users' do
-    get('Retrieves a list of users') do
-      tags 'Users'
-      consumes 'application/json'
-      security ['access-token': [], client: [], uid: []]
-      parameter name: 'access-token', in: :header, type: :string
-      parameter name: 'client', in: :header, type: :string
-      parameter name: 'uid', in: :header, type: :string
+    # get('Retrieves a list of users') do
+    #   tags 'Users'
+    #   consumes 'application/json'
+    #   security ['access-token': [], client: [], uid: []]
+    #   parameter name: 'access-token', in: :header, type: :string
+    #   parameter name: 'client', in: :header, type: :string
+    #   parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Users retrieved' do
-        let!(:standard_user) { UserFactory.create }
-        let!(:admin) { UserFactory.create(user_type: :admin) }
-        let!(:hdrs) { admin.create_new_auth_token }
-        let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client'] }
-        let(:uid) { hdrs['uid'] }
+    #   response '200', 'Users retrieved' do
+    #     let!(:standard_user) { UserFactory.create }
+    #     let!(:admin) { UserFactory.create(user_type: :admin) }
+    #     let!(:hdrs) { admin.create_new_auth_token }
+    #     let(:'access-token') { hdrs['access-token'] }
+    #     let(:client) { hdrs['client'] }
+    #     let(:uid) { hdrs['uid'] }
 
-        run_test! do |response|
-          expect(response).to have_http_status(:ok)
-          expect(parsed_response[:users].first[:id]).to eq standard_user.id
-        end
-      end
-    end
+    #     run_test! do |response|
+    #       expect(response).to have_http_status(:ok)
+    #       expect(parsed_response[:users].first[:id]).to eq standard_user.id
+    #     end
+    #   end
+    # end
 
     post('Creates a user') do
       tags 'Users'

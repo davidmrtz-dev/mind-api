@@ -21,9 +21,9 @@ module Api
       end
 
       def show
-        team = find_team
+        teams = teams(find_user)
 
-        render json: { team: ::Api::TeamSerializer.json(team) }
+        render json: { teams: teams }
       end
 
       def create
@@ -60,6 +60,10 @@ module Api
         Team.find(params[:id])
       end
 
+      def find_user
+        User.find(params[:user_id])
+      end
+
       def find_account
         Account.find(team_params[:account_id])
       end
@@ -69,6 +73,14 @@ module Api
           :account_id,
           :name
         )
+      end
+
+      def teams(user)
+        user.teams.includes(:user_teams).map do |team|
+          user_team = team.user_teams.find_by(user_id: user.id)
+          team.as_json(except: %i[created_at
+                                  updated_at]).merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
+        end
       end
     end
   end

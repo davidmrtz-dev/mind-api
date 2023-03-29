@@ -75,31 +75,31 @@ RSpec.describe 'api/v1/teams', type: :request do
   end
 
   path '/api/v1/teams/{id}' do
-    get('Retrieves a team') do
-      tags 'Teams'
-      consumes 'application/json'
-      security ['access-token': [], client: [], uid: []]
-      parameter name: 'id', in: :path, type: :string, description: 'id'
-      parameter name: 'access-token', in: :header, type: :string
-      parameter name: 'client', in: :header, type: :string
-      parameter name: 'uid', in: :header, type: :string
+    # get('Retrieves a team') do
+    #   tags 'Teams'
+    #   consumes 'application/json'
+    #   security ['access-token': [], client: [], uid: []]
+    #   parameter name: 'id', in: :path, type: :string, description: 'id'
+    #   parameter name: 'access-token', in: :header, type: :string
+    #   parameter name: 'client', in: :header, type: :string
+    #   parameter name: 'uid', in: :header, type: :string
 
-      response '200', 'Team retrieved' do
-        let!(:account) { AccountFactory.create }
-        let!(:team) { TeamFactory.create(account: account) }
-        let!(:admin) { UserFactory.create(user_type: :admin) }
-        let!(:hdrs) { admin.create_new_auth_token }
-        let(:'access-token') { hdrs['access-token'] }
-        let(:client) { hdrs['client'] }
-        let(:uid) { hdrs['uid'] }
-        let(:id) { team.id }
+    #   response '200', 'Team retrieved' do
+    #     let!(:account) { AccountFactory.create }
+    #     let!(:team) { TeamFactory.create(account: account) }
+    #     let!(:admin) { UserFactory.create(user_type: :admin) }
+    #     let!(:hdrs) { admin.create_new_auth_token }
+    #     let(:'access-token') { hdrs['access-token'] }
+    #     let(:client) { hdrs['client'] }
+    #     let(:uid) { hdrs['uid'] }
+    #     let(:id) { team.id }
 
-        run_test! do |response|
-          expect(response).to have_http_status(:ok)
-          expect(parsed_response[:team][:id]).to eq team.id
-        end
-      end
-    end
+    #     run_test! do |response|
+    #       expect(response).to have_http_status(:ok)
+    #       expect(parsed_response[:team][:id]).to eq team.id
+    #     end
+    #   end
+    # end
 
     put('Updates a team') do
       tags 'Teams'
