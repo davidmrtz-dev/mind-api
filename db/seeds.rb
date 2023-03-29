@@ -41,7 +41,7 @@ end
 end
 
 Account.all.each do |account|
-  [1, 2, 3].sample.times do
+  [5, 7, 9].sample.times do
     Team.create!(
       account: account,
       name: Faker::Team.name
@@ -49,14 +49,32 @@ Account.all.each do |account|
   end
 end
 
-30.times do
-  user_team = UserTeam.new(
-    team: Team.all.sample,
-    user: User.all.sample,
-    start_at: TODAY,
-    end_at: FUTURE_DATES.sample,
-    status: STATUSES.sample
-  )
+users = User.not_include_super
+teams = Team.all
 
-  user_team.save if user_team.valid?
+users.each do |user|
+  teams.each do |team|
+    user_team = UserTeam.new(
+      team: team,
+      user: user,
+      start_at: TODAY,
+      end_at: FUTURE_DATES.sample,
+      status: STATUSES.sample
+    )
+
+    user_team.save if rand < 0.45 && user_team.valid?
+  end
 end
+
+
+# 12.times do
+#   user_team = UserTeam.new(
+#     team: Team.all.sample,
+#     user: user,
+#     start_at: TODAY,
+#     end_at: FUTURE_DATES.sample,
+#     status: STATUSES.sample
+#   )
+
+#   user_team.save if user_team.valid?
+# end
