@@ -17,19 +17,6 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  # describe 'GET /api/teams/:id' do
-  #   let(:team) { TeamFactory.create(account: account) }
-
-  #   login_user
-
-  #   it 'returns a team' do
-  #     get :show, params: { id: team.id }
-
-  #     expect(response).to have_http_status(:ok)
-  #     expect(parsed_response[:team][:id]).to eq team.id
-  #   end
-  # end
-
   describe 'GET /api/teams/:user_id' do
     let(:developer) { UserFactory.create(password: 'password') }
     let!(:team) { TeamFactory.create(account: account) }
