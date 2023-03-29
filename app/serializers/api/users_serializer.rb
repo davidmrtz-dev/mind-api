@@ -10,11 +10,6 @@ module Api
 
     def json
       @users.map do |user|
-        teams = user.teams.includes(:user_teams).map do |team|
-          user_team = team.user_teams.find_by(user_id: user.id)
-          team.as_json(except: %i[created_at updated_at]).merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
-        end
-
         {
           id: user.id,
           name: user.name,
@@ -24,8 +19,18 @@ module Api
           profile: user.profile.serializable_hash(
             except: %i[created_at updated_at]
           ),
-          teams: teams
+          teams: teams(user)
         }
+      end
+    end
+
+    private
+
+    def teams(user)
+      user.teams.includes(:user_teams).map do |team|
+        user_team = team.user_teams.find_by(user_id: user.id)
+        team.as_json(except: %i[created_at
+                                updated_at]).merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
       end
     end
   end
