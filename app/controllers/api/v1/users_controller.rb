@@ -4,7 +4,7 @@ module Api
       include Pagination
 
       before_action :authenticate_user!
-      before_action :verify_access
+      before_action :authorize!
       before_action :not_allow_self_destroy, only: [:destroy]
 
       def index
@@ -75,10 +75,6 @@ module Api
             cv
           ]
         )
-      end
-
-      def verify_access
-        authorize!
       end
 
       def not_allow_self_destroy
