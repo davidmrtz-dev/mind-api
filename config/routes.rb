@@ -8,7 +8,8 @@ Rails.application.routes.draw do
       defaults(format: :json) do
         resources :users, except: %i[new patch]
         resources :accounts, except: %i[new patch]
-        resources :teams, except: %i[new patch]
+        resources :teams, except: %i[new show patch]
+        get 'teams/:user_id', to: 'teams#show'
         resources :user_teams, except: %i[new show patch]
       end
     end
