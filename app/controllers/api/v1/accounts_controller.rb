@@ -4,7 +4,7 @@ module Api
       include Pagination
 
       before_action :authenticate_user!
-      before_action :verify_access
+      before_action :authorize!
 
       def index
         accounts = Account.all
@@ -65,10 +65,6 @@ module Api
           :manager_name,
           :name
         )
-      end
-
-      def verify_access
-        authorize!
       end
     end
   end

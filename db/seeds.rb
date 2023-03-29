@@ -65,16 +65,3 @@ users.each do |user|
     user_team.save if rand < 0.45 && user_team.valid?
   end
 end
-
-
-# 12.times do
-#   user_team = UserTeam.new(
-#     team: Team.all.sample,
-#     user: user,
-#     start_at: TODAY,
-#     end_at: FUTURE_DATES.sample,
-#     status: STATUSES.sample
-#   )
-
-#   user_team.save if user_team.valid?
-# end
