@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::AccountsController, type: :controller do
-  let!(:user) { UserFactory.create(password: 'password', user_type: :admin) }
+  let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
   describe 'GET /api/accounts' do
     login_user
