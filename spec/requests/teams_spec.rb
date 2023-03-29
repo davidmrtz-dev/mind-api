@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::TeamsController, type: :controller do
-  let!(:user) { UserFactory.create(password: 'password', user_type: :admin) }
+  let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
   let(:account) { AccountFactory.create }
 
   describe 'GET /api/teams' do
@@ -17,16 +17,19 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'GET /api/teams/:id' do
-    let(:team) { TeamFactory.create(account: account) }
+  describe 'GET /api/teams/:user_id' do
+    let(:developer) { UserFactory.create(password: 'password') }
+    let!(:team) { TeamFactory.create(account: account) }
+    let!(:user_team) { UserTeamFactory.create(user: developer, team: team) }
 
     login_user
 
-    it 'returns a team' do
-      get :show, params: { id: team.id }
+    it 'returns a list of teams related to a user with user_team data' do
+      get :show, params: { user_id: developer.id }
 
       expect(response).to have_http_status(:ok)
-      expect(parsed_response[:team][:id]).to eq team.id
+      expect(parsed_response[:teams].first[:id]).to eq team.id
+      expect(parsed_response[:teams].first[:user_team][:id]).to eq user_team.id
     end
   end
 

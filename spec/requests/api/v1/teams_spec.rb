@@ -74,33 +74,38 @@ RSpec.describe 'api/v1/teams', type: :request do
     end
   end
 
-  path '/api/v1/teams/{id}' do
-    get('Retrieves a team') do
+  path '/api/v1/teams/{user_id}' do
+    get('Retrieves teams related to a user') do
       tags 'Teams'
       consumes 'application/json'
       security ['access-token': [], client: [], uid: []]
-      parameter name: 'id', in: :path, type: :string, description: 'id'
+      parameter name: 'user_id', in: :path, type: :string, description: 'user_id'
       parameter name: 'access-token', in: :header, type: :string
       parameter name: 'client', in: :header, type: :string
       parameter name: 'uid', in: :header, type: :string
 
       response '200', 'Team retrieved' do
-        let!(:account) { AccountFactory.create }
-        let!(:team) { TeamFactory.create(account: account) }
-        let!(:admin) { UserFactory.create(user_type: :admin) }
+        let(:account) { AccountFactory.create }
+        let(:team) { TeamFactory.create(account: account) }
+        let(:user) { UserFactory.create(password: 'password') }
+        let(:admin) { UserFactory.create(user_type: :admin) }
+        let!(:user_team) { UserTeamFactory.create(user: user, team: team) }
         let!(:hdrs) { admin.create_new_auth_token }
         let(:'access-token') { hdrs['access-token'] }
         let(:client) { hdrs['client'] }
         let(:uid) { hdrs['uid'] }
-        let(:id) { team.id }
+        let(:user_id) { user.id }
 
         run_test! do |response|
           expect(response).to have_http_status(:ok)
-          expect(parsed_response[:team][:id]).to eq team.id
+          expect(parsed_response[:teams].first[:id]).to eq team.id
+          expect(parsed_response[:teams].first[:user_team][:id]).to eq user_team.id
         end
       end
     end
+  end
 
+  path '/api/v1/teams/{id}' do
     put('Updates a team') do
       tags 'Teams'
       consumes 'application/json'

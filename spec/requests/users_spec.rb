@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
-  let!(:user) { UserFactory.create(password: 'password', user_type: :admin) }
+  let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
   describe 'GET /api/users' do
     login_user
@@ -15,7 +15,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response[:users].pluck(:id))
-        .to match_array(User.where.not(id: user.id).ids)
+        .to match_array(User.where.not(id: admin.id).ids)
     end
   end
 
@@ -80,7 +80,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'PUT /api/users/:id' do
-    let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
     let!(:user) { UserFactory.create(password: 'password') }
 
     subject(:action) do
@@ -119,7 +118,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'DELETE /api/users/:id' do
-    let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
     let!(:another_user) { UserFactory.create(password: 'password') }
 
     subject(:action) { delete :destroy, params: { id: another_user.id } }
