@@ -14,11 +14,31 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
       end
 
       it 'returns a succesfull response' do
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:success)
       end
 
       it 'returns paginated teams' do
         expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
+      end
+    end
+
+    context 'when user_id parameter is present' do
+      let!(:team_1) { TeamFactory.create(account: account) }
+      let!(:team_2) { TeamFactory.create(account: account) }
+      let!(:dev_1) { UserFactory.create(password: 'password') }
+      let!(:dev_2) { UserFactory.create(password: 'password') }
+      let!(:user_team_1) { UserTeamFactory.create(user: dev_1, team: team_1) }
+      let!(:user_team_2) { UserTeamFactory.create(user: dev_2, team: team_2) }
+
+      before { get :index, params: { user_id: dev_1.id } }
+
+      it 'returns a successful response' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns only teams that do not have a relation with the given user' do
+        expect(parsed_response[:teams].count).to eq(1)
+        expect(parsed_response[:teams][0]['id']).to eq(team_2.id)
       end
     end
   end
