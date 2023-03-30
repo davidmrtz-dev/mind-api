@@ -7,13 +7,19 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   describe 'GET /api/v1/teams' do
     login_user
 
-    it 'returns the teams' do
-      3.times { TeamFactory.create(account: account) }
+    context 'when user_id parameter is not present' do
+      before do
+        3.times { TeamFactory.create(account: account) }
+        get :index
+      end
 
-      get :index
+      it 'returns a succesfull response' do
+        expect(response).to have_http_status(:ok)
+      end
 
-      expect(response).to have_http_status(:ok)
-      expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
+      it 'returns paginated teams' do
+        expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
+      end
     end
   end
 
