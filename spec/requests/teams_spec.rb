@@ -4,7 +4,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
   let(:account) { AccountFactory.create }
 
-  describe 'GET /api/teams' do
+  describe 'GET /api/v1/teams' do
     login_user
 
     it 'returns the teams' do
@@ -17,7 +17,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'GET /api/teams/:user_id' do
+  describe 'GET /api/v1/teams/:user_id' do
     let(:developer) { UserFactory.create(password: 'password') }
     let!(:team) { TeamFactory.create(account: account) }
     let!(:user_team) { UserTeamFactory.create(user: developer, team: team) }
@@ -33,7 +33,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'POST /api/teams' do
+  describe 'POST /api/v1/teams' do
     subject(:action) do
       post :create, params: {
         team: {
@@ -70,7 +70,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'PUT /api/teams/:id' do
+  describe 'PUT /api/v1/teams/:id' do
     let(:team) { TeamFactory.create(account: account, name: 'Maze Runners') }
 
     subject(:action) do
@@ -108,7 +108,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'DELETE /api/teams/:id' do
+  describe 'DELETE /api/v1/teams/:id' do
     let!(:team) { TeamFactory.create(account: account) }
 
     subject(:action) { delete :destroy, params: { id: team.id } }
