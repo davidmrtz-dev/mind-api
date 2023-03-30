@@ -7,7 +7,14 @@ module Api
       before_action :authorize!
 
       def index
-        teams = Team.all
+        if params[:user_id].present?
+          user = find_user
+          teams = Team.where.not(id: user.team_ids)
+        else
+          teams = Team.all
+        end
+
+
 
         page = paginate(
           teams,
