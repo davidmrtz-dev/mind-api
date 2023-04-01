@@ -14,8 +14,6 @@ module Api
           teams = Team.all
         end
 
-
-
         page = paginate(
           teams,
           limit: params[:limit],
