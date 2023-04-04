@@ -6,7 +6,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
   let!(:account) { AccountFactory.create }
   let!(:team) { TeamFactory.create(account: account) }
 
-  describe 'GET /api/user_teams' do
+  describe 'GET /api/v1/user_teams' do
     login_user
     before { UserTeamFactory.create(user: user, team: team, status: :active) }
 
@@ -18,7 +18,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     end
   end
 
-  describe 'POST /api/user_teams' do
+  describe 'POST /api/v1/user_teams' do
     subject(:action) do
       post :create, params: {
         user_team: {
@@ -59,7 +59,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     end
   end
 
-  describe 'PUT /api/user_teams/:id' do
+  describe 'PUT /api/v1/user_teams/:id' do
     let!(:user_team) { UserTeamFactory.create(user: user, team: team, status: :active) }
 
     subject(:action) do
@@ -97,7 +97,7 @@ RSpec.describe Api::V1::UserTeamsController, type: :controller do
     end
   end
 
-  describe 'DELETE /api/user_teams/:id' do
+  describe 'DELETE /api/v1/user_teams/:id' do
     let!(:user_team) { UserTeamFactory.create(user: user, team: team) }
 
     subject(:action) { delete :destroy, params: { id: user_team.id } }

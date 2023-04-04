@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
-  describe 'GET /api/users' do
+  describe 'GET /api/v1/users' do
     login_user
 
     it 'return users' do
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'GET /api/users/:id' do
+  describe 'GET /api/v1/users/:id' do
     let!(:user) { UserFactory.create(email: 'user@example.com', password: 'password') }
     let!(:profile) { ProfileFactory.create(user: user, english_level: :c1, technical_knowledge: 'Docker') }
 
@@ -35,7 +35,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'POST /api/users' do
+  describe 'POST /api/v1/users' do
     subject(:action) do
       post :create, params: {
         user: {
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'PUT /api/users/:id' do
+  describe 'PUT /api/v1/users/:id' do
     let!(:user) { UserFactory.create(password: 'password') }
 
     subject(:action) do
@@ -117,7 +117,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'DELETE /api/users/:id' do
+  describe 'DELETE /api/v1/users/:id' do
     let!(:another_user) { UserFactory.create(password: 'password') }
 
     subject(:action) { delete :destroy, params: { id: another_user.id } }

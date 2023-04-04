@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::AccountsController, type: :controller do
   let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
 
-  describe 'GET /api/accounts' do
+  describe 'GET /api/v1/accounts' do
     login_user
 
     it 'returns the accounts' do
@@ -15,7 +15,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
-  describe 'GET /api/accounts/:id' do
+  describe 'GET /api/v1/accounts/:id' do
     let(:account) { AccountFactory.create }
 
     login_user
@@ -28,7 +28,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
-  describe 'POST /api/accounts' do
+  describe 'POST /api/v1/accounts' do
     subject(:action) do
       post :create, params: {
         account: {
@@ -64,7 +64,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
-  describe 'PUT /api/accounts/:id' do
+  describe 'PUT /api/v1/accounts/:id' do
     let(:account) { AccountFactory.create }
 
     subject(:action) do
@@ -103,7 +103,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
-  describe 'DELETE /api/accounts/:id' do
+  describe 'DELETE /api/v1/accounts/:id' do
     let!(:account) { AccountFactory.create }
 
     subject(:action) { delete :destroy, params: { id: account.id } }

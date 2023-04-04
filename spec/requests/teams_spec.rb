@@ -4,20 +4,46 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
   let!(:admin) { UserFactory.create(password: 'password', user_type: :admin) }
   let(:account) { AccountFactory.create }
 
-  describe 'GET /api/teams' do
+  describe 'GET /api/v1/teams' do
     login_user
 
-    it 'returns the teams' do
-      3.times { TeamFactory.create(account: account) }
+    context 'when user_id parameter is not present' do
+      before do
+        3.times { TeamFactory.create(account: account) }
+        get :index
+      end
 
-      get :index
+      it 'returns a succesfull response' do
+        expect(response).to have_http_status(:success)
+      end
 
-      expect(response).to have_http_status(:ok)
-      expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
+      it 'returns paginated teams' do
+        expect(parsed_response[:teams].pluck(:id)).to match_array(Team.ids)
+      end
+    end
+
+    context 'when user_id parameter is present' do
+      let!(:team_1) { TeamFactory.create(account: account) }
+      let!(:team_2) { TeamFactory.create(account: account) }
+      let!(:dev_1) { UserFactory.create(password: 'password') }
+      let!(:dev_2) { UserFactory.create(password: 'password') }
+      let!(:user_team_1) { UserTeamFactory.create(user: dev_1, team: team_1) }
+      let!(:user_team_2) { UserTeamFactory.create(user: dev_2, team: team_2) }
+
+      before { get :index, params: { user_id: dev_1.id } }
+
+      it 'returns a successful response' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns only teams that do not have a relation with the given user' do
+        expect(parsed_response[:teams].count).to eq(1)
+        expect(parsed_response[:teams][0]['id']).to eq(team_2.id)
+      end
     end
   end
 
-  describe 'GET /api/teams/:user_id' do
+  describe 'GET /api/v1/teams/:user_id' do
     let(:developer) { UserFactory.create(password: 'password') }
     let!(:team) { TeamFactory.create(account: account) }
     let!(:user_team) { UserTeamFactory.create(user: developer, team: team) }
@@ -33,7 +59,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'POST /api/teams' do
+  describe 'POST /api/v1/teams' do
     subject(:action) do
       post :create, params: {
         team: {
@@ -70,7 +96,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'PUT /api/teams/:id' do
+  describe 'PUT /api/v1/teams/:id' do
     let(:team) { TeamFactory.create(account: account, name: 'Maze Runners') }
 
     subject(:action) do
@@ -108,7 +134,7 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
     end
   end
 
-  describe 'DELETE /api/teams/:id' do
+  describe 'DELETE /api/v1/teams/:id' do
     let!(:team) { TeamFactory.create(account: account) }
 
     subject(:action) { delete :destroy, params: { id: team.id } }

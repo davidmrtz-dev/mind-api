@@ -7,7 +7,12 @@ module Api
       before_action :authorize!
 
       def index
-        teams = Team.all
+        if params[:user_id].present?
+          user = find_user
+          teams = Team.where.not(id: user.team_ids)
+        else
+          teams = Team.all
+        end
 
         page = paginate(
           teams,
@@ -76,7 +81,7 @@ module Api
       end
 
       def teams(user)
-        user.teams.includes(:user_teams).map do |team|
+        user.teams.includes(:user_teams).limit(params[:limit] || 10).offset(params[:offset] || 0).map do |team|
           user_team = team.user_teams.find_by(user_id: user.id)
           team.as_json(except: %i[created_at
                                   updated_at]).merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
