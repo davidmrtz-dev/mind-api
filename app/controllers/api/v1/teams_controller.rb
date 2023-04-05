@@ -81,7 +81,7 @@ module Api
       end
 
       def teams(user)
-        user.teams.includes(:user_teams).limit(params[:limit] || 10).offset(params[:offset] || 0).map do |team|
+        user.teams.includes(:user_teams, :account).limit(params[:limit] || 10).offset(params[:offset] || 0).map do |team|
           user_team = team.user_teams.find_by(user_id: user.id)
           account = team.account
           team.as_json(except: %i[created_at updated_at account_id])
