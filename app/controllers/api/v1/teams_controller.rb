@@ -83,8 +83,10 @@ module Api
       def teams(user)
         user.teams.includes(:user_teams).limit(params[:limit] || 10).offset(params[:offset] || 0).map do |team|
           user_team = team.user_teams.find_by(user_id: user.id)
-          team.as_json(except: %i[created_at
-                                  updated_at]).merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
+          account = team.account
+          team.as_json(except: %i[created_at updated_at account_id])
+            .merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
+            .merge(account: account.as_json(except: %i[created_at updated_at]))
         end
       end
     end
