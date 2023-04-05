@@ -5,7 +5,7 @@ module Query
     end
 
     def process
-      'return results'
+      'results'
     end
   end
 end
