@@ -19,9 +19,7 @@ module Query
         end_at = Date.parse(params[:end_at])
 
         begin
-          rec = records.where({ user_teams: { start_at: start_at, end_at: end_at }})
-          rec.first!
-          rec
+          query_by_date(records, start_at, end_at)
         rescue
           raise Errors::MissingIncludedRecords
         end
@@ -29,6 +27,12 @@ module Query
     end
 
     private
+
+    def query_by_date(records, start_at, end_at)
+      rec = records.where({ user_teams: { start_at: start_at, end_at: end_at }})
+      rec.first!
+      rec
+    end
 
     def raise_invalid_params
       raise Errors::InvalidParameters
