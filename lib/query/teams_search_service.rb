@@ -18,7 +18,13 @@ module Query
         start_at = Date.parse(params[:start_at])
         end_at = Date.parse(params[:end_at])
 
-        records.where({ user_teams: { start_at: start_at, end_at: end_at }})
+        begin
+          rec = records.where({ user_teams: { start_at: start_at, end_at: end_at }})
+          rec.first!
+          rec
+        rescue
+          raise Errors::InvalidParameters, 'okok'
+        end
       end
     end
 

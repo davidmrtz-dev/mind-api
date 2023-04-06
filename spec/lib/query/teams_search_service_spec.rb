@@ -38,7 +38,7 @@ describe Query::TeamSearchService do
 
     describe 'when dates params are provided but not keyword' do
       it 'should return matching teams based on given dates' do
-        result = described_class.for(user.teams.includes(:user_teams), {
+        result = described_class.for(Team.all, {
           keyword: '',
           start_at: 2.days.ago.to_s,
           end_at: Time.zone.tomorrow.to_s
