@@ -1,7 +1,8 @@
 module Api
   class TeamsSerializer
-    def initialize(teams)
+    def initialize(teams, user_id = nil)
       @teams = teams
+      @user_id = user_id
     end
 
     def self.json(teams)
@@ -10,7 +11,7 @@ module Api
 
     def json
       @teams.map do |team|
-        team.serializable_hash(
+        serialized = team.serializable_hash(
           include: [
             :account
           ],
@@ -19,6 +20,10 @@ module Api
             updated_at
           ]
         )
+
+        return serialized.merge({ ok: 'ok' }) if @user_id.present?
+
+        serialized
       end
     end
   end
