@@ -23,7 +23,7 @@ module Query
           rec.first!
           rec
         rescue
-          raise Errors::InvalidParameters, 'okok'
+          raise Errors::MissingIncludedRecords
         end
       end
     end
