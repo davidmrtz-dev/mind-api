@@ -9,6 +9,12 @@ module Query
 
     def process
       raise_invalid_params unless valid_params
+
+      if query_by_keyword?
+        records.where(
+          'LOWER(name) LIKE :word', word: "%#{params[:keyword].downcase}%"
+        )
+      end
     end
 
     private

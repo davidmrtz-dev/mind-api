@@ -30,7 +30,7 @@ describe Query::TeamSearchService do
         })
 
         expect(result.count).to eq 1
-        expect(result.first.id).to team_a.name
+        expect(result.first.name).to eq team_a.name
       end
     end
   end
