@@ -14,6 +14,11 @@ module Query
         records.where(
           'LOWER(name) LIKE :word', word: "%#{params[:keyword].downcase}%"
         )
+      elsif query_by_dates?
+        start_at = Date.parse(params[:start_at])
+        end_at = Date.parse(params[:end_at])
+
+        records.where({ user_teams: { start_at: start_at, end_at: end_at }})
       end
     end
 

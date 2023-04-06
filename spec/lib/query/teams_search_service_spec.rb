@@ -14,7 +14,7 @@ describe Query::TeamSearchService do
       expect do
         described_class.for(user, {
           keyword: 'Foxes',
-          start_at: 2.days.ago,
+          start_at: 2.days.ago.to_s,
           end_at: ''
         })
       end.to raise_error(Errors::InvalidParameters)
@@ -37,11 +37,11 @@ describe Query::TeamSearchService do
     end
 
     describe 'when dates params are provided but not keyword' do
-      it 'should return matching teams based on dates range' do
-        result = described_class.for(Team.all, {
+      it 'should return matching teams based on given dates' do
+        result = described_class.for(user.teams.includes(:user_teams), {
           keyword: '',
-          start_at: 2.days.ago,
-          end_at: Time.zone.tomorrow
+          start_at: 2.days.ago.to_s,
+          end_at: Time.zone.tomorrow.to_s
         })
 
         expect(result.count).to eq 1
