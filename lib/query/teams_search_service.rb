@@ -1,9 +1,9 @@
 module Query
   class TeamSearchService < ApplicationService
-    attr_reader :user, :params
+    attr_reader :records, :params
 
-    def initialize(user, params)
-      @user = user
+    def initialize(records, params)
+      @records = records
       @params = params
     end
 
