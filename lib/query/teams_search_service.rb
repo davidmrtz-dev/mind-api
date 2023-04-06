@@ -14,12 +14,14 @@ module Query
         records.where(
           'LOWER(name) LIKE :word', word: "%#{params[:keyword].downcase}%"
         )
-      elsif query_by_dates?
+      else
         start_at = Date.parse(params[:start_at])
         end_at = Date.parse(params[:end_at])
 
         begin
-          query_by_date(records, start_at, end_at)
+          query_by_dates? ?
+            query_by_dates(records, start_at, end_at) :
+            query_by_key_and_dates(records, start_at, end_at, params[:keyword])
         rescue
           raise Errors::MissingIncludedRecords
         end
@@ -28,8 +30,15 @@ module Query
 
     private
 
-    def query_by_date(records, start_at, end_at)
+    def query_by_dates(records, start_at, end_at)
       rec = records.where({ user_teams: { start_at: start_at, end_at: end_at }})
+      rec.first!
+      rec
+    end
+
+    def query_by_key_and_dates(records, start_at, end_at, keyword)
+      rec = records.where('LOWER(name) LIKE :word', word: "%#{keyword.downcase}%")
+        .where({ user_teams: { start_at: start_at, end_at: end_at }})
       rec.first!
       rec
     end
