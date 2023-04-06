@@ -39,10 +39,7 @@ module Query
     end
 
     def valid_params
-      return true if query_by_keyword? ||
-        query_by_dates? || query_by_key_and_dates?
-
-      false
+      query_by_keyword? || query_by_dates? || query_by_key_and_dates?
     end
 
     def query_by_keyword?
