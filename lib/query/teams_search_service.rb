@@ -43,27 +43,23 @@ module Query
     end
 
     def query_by_keyword?
-      with_keyword? && !with_start_at? && !with_end_at?
+      with_params[:keyword] && !with_params[:start_at] && !with_params[:end_at]
     end
 
     def query_by_dates?
-      !with_keyword? && with_start_at? && with_end_at?
+      !with_params[:keyword] && with_params[:start_at] && with_params[:end_at]
     end
 
     def query_by_key_and_dates?
-      with_keyword? && with_start_at? && with_end_at?
+      with_params[:keyword] && with_params[:start_at] && with_params[:end_at]
     end
 
-    def with_keyword?
-      params[:keyword].present?
-    end
-
-    def with_start_at?
-      params[:start_at].present?
-    end
-
-    def with_end_at?
-      params[:end_at].present?
+    def with_params
+      {
+        keyword: params[:keyword].present?,
+        start_at: params[:start_at].present?,
+        end_at: params[:end_at].present?,
+      }
     end
   end
 end
