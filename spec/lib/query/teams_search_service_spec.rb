@@ -36,8 +36,8 @@ describe Query::TeamSearchService do
       end
     end
 
-    describe 'when dates params are provided but not keyword' do
-      context 'when user_teams are included in active record relation' do
+    context 'when user_teams are included in active record relation' do
+      describe 'when dates params are provided but not keyword' do
         it 'should return matching teams based on given dates' do
           result = described_class.for(user.teams.includes(:user_teams), {
             keyword: '',
@@ -51,21 +51,7 @@ describe Query::TeamSearchService do
         end
       end
 
-      context 'when user_teams are not included in active record relation' do
-        it 'should raise an error' do
-          expect do
-            described_class.for(Team.all, {
-              keyword: '',
-              start_at: 2.days.ago.to_s,
-              end_at: Time.zone.tomorrow.to_s
-            })
-          end.to raise_error(Errors::MissingIncludedRecords)
-        end
-      end
-    end
-
-    describe 'when dates and keyword params are provided' do
-      context 'when user_teams are included in active record relation' do
+      describe 'when dates and keyword params are provided' do
         it 'should return matching teams based on given dates and keyword' do
           result = described_class.for(user.teams.includes(:user_teams), {
             keyword: team_b.name,
@@ -78,8 +64,22 @@ describe Query::TeamSearchService do
           expect(result.first.name).to eq team_b.name
         end
       end
+    end
 
-      context 'when user_teams are not included in active record relation' do
+    context 'when user_teams are not included in active record relation' do
+      describe 'when dates params are provided but not keyword' do
+        it 'should raise an error' do
+          expect do
+            described_class.for(Team.all, {
+              keyword: '',
+              start_at: 2.days.ago.to_s,
+              end_at: Time.zone.tomorrow.to_s
+            })
+          end.to raise_error(Errors::MissingIncludedRecords)
+        end
+      end
+
+      describe 'when dates and keyword params are provided' do
         it 'should raise an erro' do
           expect do
             described_class.for(Team.all, {
