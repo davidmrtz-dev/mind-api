@@ -63,5 +63,33 @@ describe Query::TeamSearchService do
         end
       end
     end
+
+    describe 'when dates and keyword params are provided' do
+      context 'when user_teams are included in active record relation' do
+        it 'should return matching teams based on given dates and keyword' do
+          result = described_class.for(user.teams.includes(:user_teams), {
+            keyword: team_b.name,
+            start_at: 2.days.from_now.to_s,
+            end_at: 5.days.from_now.to_s
+          })
+
+          expect(result.count).to eq 1
+          expect(result.first.id).to eq team_b.id
+          expect(result.first.name).to eq team_b.name
+        end
+      end
+
+      context 'when user_teams are not included in active record relation' do
+        it 'should raise an erro' do
+          expect do
+            described_class.for(Team.all, {
+              keyword: team_b.name,
+              start_at: 2.days.from_now.to_s,
+              end_at: 5.days.from_now.to_s
+            })
+          end.to raise_error(Errors::MissingIncludedRecords)
+        end
+      end
+    end
   end
 end
