@@ -50,12 +50,17 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
 
     login_user
 
-    it 'returns a list of teams related to a user with user_team data' do
-      get :show, params: { user_id: developer.id }
+    context 'when search params are not included' do
+      before { get :show, params: { user_id: developer.id } }
 
-      expect(response).to have_http_status(:ok)
-      expect(parsed_response[:teams].first[:id]).to eq team.id
-      expect(parsed_response[:teams].first[:user_team][:id]).to eq user_team.id
+      it 'returns a list of teams related to a user' do
+        expect(response).to have_http_status(:ok)
+        expect(parsed_response[:teams].first[:id]).to eq team.id
+      end
+
+      it 'includes user_team info' do
+        expect(parsed_response[:teams].first[:user_team][:id]).to eq user_team.id
+      end
     end
   end
 
