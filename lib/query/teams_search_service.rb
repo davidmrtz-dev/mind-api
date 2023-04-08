@@ -29,7 +29,7 @@ module Query
 
     def query(records, keyword, start_at: nil, end_at: nil)
       rec = records.where('LOWER(name) LIKE :word', word: "%#{keyword.downcase}%")
-      rec = rec.where({ user_teams: { start_at: start_at, end_at: end_at }}) if start_at.present? && end_at.present?
+      rec = rec.where({ user_teams: { start_at: start_at, end_at: end_at }}) if with_dates?
       rec.first!
       rec
     end
@@ -47,11 +47,15 @@ module Query
     end
 
     def query_by_dates?
-      !with_params[:keyword] && with_params[:start_at] && with_params[:end_at]
+      !with_params[:keyword] && with_dates?
     end
 
     def query_by_key_and_dates?
-      with_params[:keyword] && with_params[:start_at] && with_params[:end_at]
+      with_params[:keyword] && with_dates?
+    end
+
+    def with_dates?
+      with_params[:start_at] && with_params[:end_at]
     end
 
     def with_params
