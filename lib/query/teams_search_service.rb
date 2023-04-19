@@ -1,10 +1,10 @@
 module Query
   class TeamSearchService < ApplicationService
-    attr_reader :params, :records
+    attr_reader :records, :params
 
-    def initialize(params, records: nil)
-      @params = params
+    def initialize(records, params)
       @records = records
+      @params = params
     end
 
     def process

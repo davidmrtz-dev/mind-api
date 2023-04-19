@@ -12,11 +12,11 @@ describe Query::TeamSearchService do
   context 'when params are not valid' do
     it 'should raise an error' do
       expect do
-        described_class.for({
+        described_class.for(Team.all, {
           keyword: 'Foxes',
           start_at: 2.days.ago.to_s,
           end_at: ''
-        }, records: Team.all)
+        })
       end.to raise_error(Errors::InvalidParameters)
     end
   end
@@ -24,11 +24,11 @@ describe Query::TeamSearchService do
   context 'when params are valid' do
     describe 'when dates params are not provided but keyword' do
       it 'should return matching teams based on name' do
-        result = described_class.for({
+        result = described_class.for(Team.all, {
           keyword: team_a.name,
           start_at: '',
           end_at: ''
-        }, records: Team.all)
+        })
 
         expect(result.count).to eq 1
         expect(result.first.id).to eq team_a.id
@@ -39,11 +39,11 @@ describe Query::TeamSearchService do
     context 'when user_teams are included in active record relation' do
       describe 'when dates params are provided but not keyword' do
         it 'should return matching teams based on given dates' do
-          result = described_class.for({
+          result = described_class.for(user.teams.includes(:user_teams), {
             keyword: '',
             start_at: 2.days.ago.to_s,
             end_at: Time.zone.tomorrow.to_s
-          }, records: user.teams.includes(:user_teams))
+          })
 
           expect(result.count).to eq 1
           expect(result.first.id).to eq team_a.id
@@ -53,11 +53,11 @@ describe Query::TeamSearchService do
 
       describe 'when dates and keyword params are provided' do
         it 'should return matching teams based on given dates and keyword' do
-          result = described_class.for({
+          result = described_class.for(user.teams.includes(:user_teams), {
             keyword: team_b.name,
             start_at: 2.days.from_now.to_s,
             end_at: 5.days.from_now.to_s
-          }, records: user.teams.includes(:user_teams))
+          })
 
           expect(result.count).to eq 1
           expect(result.first.id).to eq team_b.id
@@ -70,11 +70,11 @@ describe Query::TeamSearchService do
       describe 'when dates params are provided but not keyword' do
         it 'should raise an error' do
           expect do
-            described_class.for({
+            described_class.for(Team.all, {
               keyword: '',
               start_at: 2.days.ago.to_s,
               end_at: Time.zone.tomorrow.to_s
-            }, records: Team.all)
+            })
           end.to raise_error(Errors::MissingIncludedRecords)
         end
       end
@@ -82,11 +82,11 @@ describe Query::TeamSearchService do
       describe 'when dates and keyword params are provided' do
         it 'should raise an erro' do
           expect do
-            described_class.for({
+            described_class.for(Team.all, {
               keyword: team_b.name,
               start_at: 2.days.from_now.to_s,
               end_at: 5.days.from_now.to_s
-            }, records: Team.all)
+            })
           end.to raise_error(Errors::MissingIncludedRecords)
         end
       end

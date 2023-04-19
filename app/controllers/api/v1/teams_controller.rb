@@ -29,7 +29,7 @@ module Api
         user = find_user
         teams = user.teams.includes(:user_teams, :account)
 
-        # if Query::TeamSearchService.valid_params?(search_params)
+        # if Query::TeamSearchService.new(search_params).valid_params?
         #   teams = Query::TeamSearchService.for(teams, search_params)
         # end
 
