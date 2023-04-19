@@ -1,14 +1,14 @@
 module Query
   class TeamSearchService < ApplicationService
-    attr_reader :records, :params
+    attr_reader :params, :records
 
-    def initialize(records, params)
-      @records = records
+    def initialize(params, records: nil)
       @params = params
+      @records = records
     end
 
     def process
-      raise_invalid_params unless valid_params
+      raise_invalid_params unless valid_params?
 
       if query_by_keyword?
         query(records, params[:keyword])
@@ -25,6 +25,10 @@ module Query
       end
     end
 
+    def valid_params?
+      query_by_keyword? || query_by_dates? || query_by_key_and_dates?
+    end
+
     private
 
     def query(records, keyword, start_at: nil, end_at: nil)
@@ -36,10 +40,6 @@ module Query
 
     def raise_invalid_params
       raise Errors::InvalidParameters
-    end
-
-    def valid_params
-      query_by_keyword? || query_by_dates? || query_by_key_and_dates?
     end
 
     def query_by_keyword?
