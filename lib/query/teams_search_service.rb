@@ -25,11 +25,11 @@ module Query
       end
     end
 
+    private
+
     def valid_params?
       query_by_keyword? || query_by_dates? || query_by_key_and_dates?
     end
-
-    private
 
     def query(records, keyword, start_at: nil, end_at: nil)
       rec = records.where('LOWER(name) LIKE :word', word: "%#{keyword.downcase}%")
