@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'query/teams_search_service'
 
-describe Validators::TeamSearchService do
+describe Validators::TeamsSearchService do
   describe '.valid_params?' do
     context 'when params are valid' do
       it 'should return truthy' do

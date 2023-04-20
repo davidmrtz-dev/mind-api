@@ -28,8 +28,8 @@ module Api
       def show
         user = find_user
 
-        if Validators::TeamSearchService.valid_params?(search_params)
-          teams = Query::TeamSearchService.for(
+        if Validators::TeamsSearchService.valid_params?(search_params)
+          teams = Query::TeamsSearchService.for(
             user.teams.includes(:user_teams, :account),
             search_params
           )

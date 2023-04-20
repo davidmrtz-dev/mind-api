@@ -1,5 +1,5 @@
 module Validators
-  class TeamSearchService
+  class TeamsSearchService
     class << self
       def valid_params?(params)
         hashed = with_params(params)

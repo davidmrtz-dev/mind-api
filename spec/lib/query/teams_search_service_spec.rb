@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'query/teams_search_service'
 
-describe Query::TeamSearchService do
+describe Query::TeamsSearchService do
   let(:user) { UserFactory.create(password: 'password') }
   let(:account) { AccountFactory.create }
   let!(:team_a) { TeamFactory.create(account: account, name: 'Lincers') }

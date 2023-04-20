@@ -1,5 +1,5 @@
 module Query
-  class TeamSearchService < ApplicationService
+  class TeamsSearchService < ApplicationService
     attr_reader :records, :params
 
     def initialize(records, params)
