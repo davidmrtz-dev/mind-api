@@ -7,8 +7,8 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'
-    resource '*',
+    origins Rails.application.credentials.dig(Rails.env.to_sym, :domain)
+    resource '/api/*',
              headers: :any,
              expose: %w[access-token uid client],
              methods: %i[get post options delete put]
