@@ -27,11 +27,15 @@ module Api
 
       def show
         user = find_user
-        teams = user.teams.includes(:user_teams, :account)
 
-        # if Query::TeamSearchService.new(search_params).valid_params?
-        #   teams = Query::TeamSearchService.for(teams, search_params)
-        # end
+        if Validators::TeamSearchService.valid_params?(search_params)
+          teams = Query::TeamSearchService.for(
+            user.teams.includes(:user_teams, :account),
+            search_params
+          )
+        else
+          teams = user.teams.includes(:user_teams, :account)
+        end
 
         page = paginate(
           teams,
