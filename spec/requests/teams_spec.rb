@@ -45,17 +45,50 @@ RSpec.describe Api::V1::TeamsController, type: :controller do
 
   describe 'GET /api/v1/teams/:user_id' do
     let(:developer) { UserFactory.create(password: 'password') }
-    let!(:team) { TeamFactory.create(account: account) }
-    let!(:user_team) { UserTeamFactory.create(user: developer, team: team) }
+    let(:team_1) { TeamFactory.create(account: account, name: 'Alligators') }
+    let(:team_2) { TeamFactory.create(account: account) }
+    let!(:u_t_1) { UserTeamFactory.create(user: developer, team: team_1) }
+    let!(:u_t_2) { UserTeamFactory.create(user: developer, team: team_2) }
 
     login_user
 
-    it 'returns a list of teams related to a user with user_team data' do
-      get :show, params: { user_id: developer.id }
+    context 'when search params are not included' do
+      before { get :show, params: { user_id: developer.id } }
 
-      expect(response).to have_http_status(:ok)
-      expect(parsed_response[:teams].first[:id]).to eq team.id
-      expect(parsed_response[:teams].first[:user_team][:id]).to eq user_team.id
+      it 'returns a list of teams related to a user' do
+        expect(response).to have_http_status(:ok)
+        expect(parsed_response[:teams].map { |t| t[:id] })
+          .to match_array([team_1.id, team_2.id])
+      end
+
+      it 'includes user_team data' do
+        expect(response).to have_http_status(:ok)
+        expect(parsed_response[:teams].map { |t| t[:user_team][:id] })
+          .to match_array([u_t_1.id, u_t_2.id])
+      end
+    end
+
+    context 'when search params are included' do
+      before do
+        get :show, params: {
+          user_id: developer.id,
+          keyword: 'Alligators',
+          start_at: '',
+          end_at: ''
+        }
+      end
+
+      it 'returns a list of filteres teams related to a user' do
+        expect(response).to have_http_status(:ok)
+        expect(parsed_response[:teams].map { |t| t[:id]})
+          .to match_array([team_1.id])
+      end
+
+      it 'includes user_team data' do
+        expect(response).to have_http_status(:ok)
+        expect(parsed_response[:teams].map { |t| t[:user_team][:id] })
+          .to match_array([u_t_1.id])
+      end
     end
   end
 

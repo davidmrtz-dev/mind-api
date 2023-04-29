@@ -26,9 +26,26 @@ module Api
       end
 
       def show
-        teams = teams(find_user)
+        user = find_user
 
-        render json: { teams: teams }
+        if Validators::TeamsSearchService.valid_params?(search_params)
+          teams = Query::TeamsSearchService.for(
+            user.teams.includes(:user_teams, :account),
+            search_params
+          )
+        else
+          teams = user.teams.includes(:user_teams, :account)
+        end
+
+        page = paginate(
+          teams,
+          limit: params[:limit],
+          offset: params[:offset]
+        )
+
+        render json: {
+          teams: ::Api::TeamsSerializer.json(page, user.id)
+        }
       end
 
       def create
@@ -80,14 +97,12 @@ module Api
         )
       end
 
-      def teams(user)
-        user.teams.includes(:user_teams, :account).limit(params[:limit] || 10).offset(params[:offset] || 0).map do |team|
-          user_team = team.user_teams.find_by(user_id: user.id)
-          account = team.account
-          team.as_json(except: %i[created_at updated_at account_id])
-            .merge(user_team: user_team.as_json(except: %i[created_at updated_at]))
-            .merge(account: account.as_json(except: %i[created_at updated_at]))
-        end
+      def search_params
+        params.permit(
+          :keyword,
+          :start_at,
+          :end_at
+        )
       end
     end
   end
