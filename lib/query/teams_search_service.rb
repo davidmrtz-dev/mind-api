@@ -24,7 +24,7 @@ module Query
     def query(records, keyword, start_at: nil, end_at: nil)
       rec = records.where('LOWER(name) LIKE :word', word: "%#{keyword.downcase}%")
       rec = rec.where({ user_teams: { start_at: start_at, end_at: end_at }}) if start_at.present? && end_at.present?
-      rec.first!
+      rec.first
       rec
     end
   end
