@@ -22,6 +22,16 @@ describe Query::TeamsSearchService do
         expect(result.first.id).to eq team_a.id
         expect(result.first.name).to eq team_a.name
       end
+
+      it 'should not raise an error if there are 0 coincidences' do
+        expect do
+          described_class.for(Team.all, {
+            keyword: 'ssss',
+            start_at: '',
+            end_at: ''
+          })
+        end.to_not raise_error
+      end
     end
 
     context 'when user_teams are included in active record relation' do
